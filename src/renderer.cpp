@@ -19,7 +19,7 @@ Renderer::~Renderer(){
 void Renderer::prints(int x, int y, std::string s, ...){
 	char *text;
 	va_list ap;
-	text = new char[80];
+	text = new char[255];
 	va_start(ap, s);
 	vsprintf(text, s.c_str(), ap);
 	va_end(ap);
@@ -33,7 +33,7 @@ void Renderer::prints(int x, int y, std::string s, ...){
 void Renderer::printlns(int x, std::string s, ...){
 	char *text;
 	va_list ap;
-	text = new char[80];
+	text = new char[255];
 	va_start(ap, s);
 	vsprintf(text, s.c_str(), ap);
 	va_end(ap);
@@ -45,7 +45,7 @@ void Renderer::printlns(int x, std::string s, ...){
 void Renderer::print(std::string s, ...){
 	char *text;
 	va_list ap;
-	text = new char[80];
+	text = new char[255];
 	va_start(ap, s);
 	vsprintf(text, s.c_str(), ap);
 	va_end(ap);
@@ -61,7 +61,7 @@ void Renderer::printc(int x, int y, char c){
 void Renderer::Debug(std::string s, ...){
 	char *text;
 	va_list ap;
-	text = new char[80];
+	text = new char[255];
 	va_start(ap, s);
 	vsprintf(text, s.c_str(), ap);
 	va_end(ap);
