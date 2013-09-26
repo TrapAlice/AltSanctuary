@@ -42,8 +42,17 @@ private:
 	CLASS_SELECTED _selectedClass;
 	RACE_CATEGORY  _raceCategory;
 	bool           _isMale;
-	void           _printBlankFace(Renderer *r);
 	std::string    _name;
+	void           _printBlankFace(Renderer *r);
+	void           _SelectClassRender(Renderer *r);
+	void           _SelectGenderRender(Renderer *r);
+	void           _ClassInfoRender(Renderer *r);
+	void           _SelectPersonalityRender(Renderer *r);
+	void           _SelectGameModeRender(Renderer *r);
+	void           _SelectRaceCatagoryRender(Renderer *r);
+	void           _SelectRaceRender(Renderer *r);
+	void           _EnterNameRender(Renderer *r);
+	void           _BackStoryRender(Renderer *r);
 };
 
 #endif
