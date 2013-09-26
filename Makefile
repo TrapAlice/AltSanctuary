@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -Wall -Iinclude -g
+CFLAGS=-c -Wall -Iinclude -g -std=c++11
 LDFLAGS= -Llib -ltcod -ltcodxx -Wl,-rpath=. 
 SOURCES=$(wildcard src/*.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
