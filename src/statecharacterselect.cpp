@@ -209,7 +209,7 @@ void State_CharacterSelect::Update(Stack<iGameState*> *s, World *w, char c){
 				_name+= c;
 			break;
 		case BackStory:
-			//Create Player
+			w->SetPlayer(new Character(_selectedClass, _selectedRace, _name));
 			s->Replace(new State_GameMode());
 			break;
 	}

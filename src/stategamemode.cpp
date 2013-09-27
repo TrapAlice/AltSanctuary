@@ -22,7 +22,7 @@ void State_GameMode::Render(World *w, Renderer *r){
 	r->printlns(0, "  /   /   .  ,   /    _/' /'             |   `        `-.,__     |_    /");
 	r->printlns(0, "");
 	r->printlns(0, "");
-	r->printlns(2, "HP: 870 / 870   ATK: 67 - 80   MP: 65 / 65   GOLD: 0"); //Player stats
+	r->printlns(2, "HP: %d / %d   ATK: 67 - 80   MP: 65 / 65   GOLD: 0", c->Hp(), c->MaxHp()); //Player stats
 	r->printlns(0, "");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Quest: Search the Grassy Fields for another Gate."); //Current quest
