@@ -1,31 +1,33 @@
 #include "character.h"
 #include "skill.h"
 #include "inventory.h"
+#include "class.h"
+#include "race.h"
 #include <stdlib.h>
 #include "dbg.h"
 
-Character::Character(int classType){
+Character::Character(Class class_type, Race race, std::string name){
 	skills_ = NULL;
 	inv_ = NULL;
-	class_type_ = classType;
-	name_ = Class();
-	switch( classType ){
-		case CLASS_BARBARIAN:
+	_class = class_type;
+	_name = name;
+	switch( _class ){
+		case Class::BARBARIAN:
 			_BarbarianInit();
 			break;
-		case CLASS_PALADIN:
+		case Class::PALADIN:
 			_PaladinInit();
 			break;
-		case CLASS_ASSASSIN:
+		case Class::ASSASSIN:
 			_AssassinInit();
 			break;
-		case CLASS_WIZARD:
+		case Class::WIZARD:
 			_WizardInit();
 			break;
-		case CLASS_RANGER:
+		case Class::RANGER:
 			_RangerInit();
 			break;
-		case CLASS_DRUID:
+		case Class::DRUID:
 			_DruidInit();
 			break;
 		default:

@@ -5,21 +5,15 @@
 
 #include "entity.h"
 
-enum e_classType{
-	CLASS_BARBARIAN,
-	CLASS_PALADIN,
-	CLASS_ASSASSIN,
-	CLASS_WIZARD,
-	CLASS_DRUID,
-	CLASS_RANGER,
-};
+enum class Class;
+enum class Race;
 
 class Skill;
 class Inventory;
 
 class Character : public Entity{
 public:
-	Character(int classType);
+	Character(Class class_type, Race race, std::string name);
 	~Character();
 	std::string Class();
 	double      Str();
@@ -38,7 +32,9 @@ public:
 	int         SkillLibrarySize();
 	std::string SkillSummary( int pos );
 private:
-	int        class_type_;
+	Class       _class;
+	Race        _race;
+	std::string _name;
 	double     strength_;
 	double     dexterity_;
 	double     intelligence_;
