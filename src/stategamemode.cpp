@@ -10,40 +10,34 @@
 
 void State_GameMode::Render(World *w, Renderer *r){
 	Character *c = w->Player();
-	r->prints(0, 0,  "+-----------------------------------------------------------------------------+");
-	r->prints(1, 2,  "%s the Lvl %d %s", c->Name().c_str(), 1, c->Class().c_str());
-	r->prints(1, 3,  "WEAP: Name [iLvl 0] Effect");
-	r->prints(1, 4,  "ARMR: [0%]");
-	r->prints(1, 5,  "ITEM: Name [+0]");
-	r->prints(1, 7,  "VIT: [%0.1f]", c->Vit());
-	r->prints(1, 8,  "STR: [%0.1f]", c->Str());
-	r->prints(1, 9,  "INT: [%0.1f]", c->Int());
-	r->prints(1, 10, "DEX: [%0.1f]", c->Dex());
-	r->prints(0, 11, "+-----------------------------------------------------------------------------+");
-	r->prints(0, 13, "> HP: %d/%d", c->Hp(), c->MaxHp());
-	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
-	r->prints(1, 16, "[1] Test Fight");
-	r->prints(1, 17, "[s] Change Skills");
-	r->prints(1, 18, "[e] Equipment");
-	r->prints(0, 22, "+-----------------------------------------------------------------------------+");
+	r->printlns(0, "");
+	r->printlns(0, "                                    ,sdPBbs.");
+	r->printlns(0, "                      ,dBb.       ,d$$$$$$$$b.                .   ._, |_");
+	r->printlns(0, "                     /sbbbs`.    d$P'`Y'`Y'`?$b          `-.``/  .  ` /");
+	r->printlns(0, "          ,dPBb    _/   | . ,`. d'    `  '  : `b            ``. _`,   | :.");
+	r->printlns(0, "         /sBDDBS. /  / /       /    |       ::. `      _|_.___``, ``/ -.;||");
+	r->printlns(0, "       ./        `.   /   `   /    / `           `         ` -,--.`._|| / /");
+	r->printlns(0, "      /      |  ,  ;     _,--'        |           |.      ;'   `-.`./ / |/");
+	r->printlns(0, "   _/` .    /       .__/' _/          `   |`       `.            |   -|//");
+	r->printlns(0, "  /   /   .  ,   /    _/' /'             |   `        `-.,__     |_    /");
+	r->printlns(0, "");
+	r->printlns(0, "");
+	r->printlns(2, "HP: 870 / 870   ATK: 67 - 80   MP: 65 / 65   GOLD: 0"); //Player stats
+	r->printlns(0, "");
+	r->printlns(0, "+-----------------------------------------------------------------------------+");
+	r->printlns(2, "Quest: Search the Grassy Fields for another Gate."); //Current quest
+	r->printlns(0, "+-----------------------------------------------------------------------------+");
+	r->printlns(0, "| [1] -> Grassy Fields    (01-05) |       |                 | [R] Heal [>>>]  |");
+	r->printlns(0, "|                                 |       |                 |                 |");
+	r->printlns(0, "|                                 |       |                 |                 |");
+	r->printlns(0, "|                                 |       |-----------------------------------|");
+	r->printlns(0, "|                                 |       |     --Saved--   | <0> Restart     |");
+	r->printlns(0, "|                                 |       | <C> Character   | <P> Quit        |");
+	r->printlns(0, "+-----------------------------------------------------------------------------+");
+
 
 }
 
 void State_GameMode::Update(Stack<iGameState*> *s, World *w, char c){
-	switch( c ){
-		case 'E':
-		case 'e':
-			s->Push(new State_Inventory());
-			break;
-		case 'S':
-		case 's':
-			s->Push(new State_SkillSwap());
-			break;
-		case '1':
-			s->Push(new State_Combat());
-			break;
-		case '4':
-			w->End();
-			break;
-	}
+
 }
