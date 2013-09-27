@@ -16,14 +16,8 @@ enum CURRENT_STATE{
 	BackStory,
 };
 
-enum CLASS_SELECTED{
-	Barbarian,
-	Paladin,
-	Assassin,
-	Wizard,
-	Druid,
-	Ranger,
-};
+enum class Class;
+enum class Race;
 
 enum RACE_CATEGORY{
 	Mystical,
@@ -39,8 +33,10 @@ public:
 	void Update( Stack<iGameState*> *s, World *w, char c );
 private:
 	CURRENT_STATE  _state;
-	CLASS_SELECTED _selectedClass;
+	Class          _selectedClass;
+	Race           _selectedRace;
 	RACE_CATEGORY  _raceCategory;
+	int            _selectedPersonality;
 	bool           _isMale;
 	std::string    _name;
 	void           _printBlankFace(Renderer *r);

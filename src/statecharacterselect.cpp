@@ -4,6 +4,8 @@
 #include "character.h"
 #include "world.h"
 #include "dbg.h"
+#include "class.h"
+#include "race.h"
 
 State_CharacterSelect::State_CharacterSelect(){
 	_state = SelectClass;
@@ -48,27 +50,27 @@ void State_CharacterSelect::Update(Stack<iGameState*> *s, World *w, char c){
 		case SelectClass:
 			switch(c){
 				case '1':
-					_selectedClass = Barbarian;
+					_selectedClass = Class::BARBARIAN;
 					_state = SelectGender;
 					break;
 				case '2':
-					_selectedClass = Paladin;
+					_selectedClass = Class::PALADIN;
 					_state = SelectGender;
 					break;
 				case '3':
-					_selectedClass = Assassin;
+					_selectedClass = Class::ASSASSIN;
 					_state = SelectGender;
 					break;
 				case '4':
-					_selectedClass = Wizard;
+					_selectedClass = Class::WIZARD;
 					_state = SelectGender;
 					break;
 				case '5':
-					_selectedClass = Druid;
+					_selectedClass = Class::DRUID;
 					_state = SelectGender;
 					break;
 				case '6':
-					_selectedClass = Ranger;
+					_selectedClass = Class::RANGER;
 					_state = SelectGender;
 					break;
 				case 'a':
@@ -97,12 +99,15 @@ void State_CharacterSelect::Update(Stack<iGameState*> *s, World *w, char c){
 		case SelectPersonality:
 			switch(c){
 				case '1':
+					_selectedPersonality = 1;
 					_state = SelectGameMode;
 					break;
 				case '2':
+					_selectedPersonality = 2;
 					_state = SelectGameMode;
 					break;
 				case '3':
+					_selectedPersonality = 3;
 					_state = SelectGameMode;
 					break;
 				case 'a':
@@ -145,12 +150,45 @@ void State_CharacterSelect::Update(Stack<iGameState*> *s, World *w, char c){
 		case SelectRace:
 			switch(c){
 				case '1':
+					switch(_raceCategory){
+						case Mystical:
+							_selectedRace = Race::HUMAN;
+							break;
+						case Powerful:
+							_selectedRace = Race::SILIAN;
+							break;
+						case Steadfast:
+							_selectedRace = Race::KRASTE;
+							break;
+					}
 					_state = EnterName;
 					break;
 				case '2':
+					switch(_raceCategory){
+						case Mystical:
+							_selectedRace = Race::FLAMMKIN;
+							break;
+						case Powerful:
+							_selectedRace = Race::JOTUNNAR;
+							break;
+						case Steadfast:
+							_selectedRace = Race::WYSPERA;
+							break;
+					}
 					_state = EnterName;
 					break;
 				case '3':
+					switch(_raceCategory){
+						case Mystical:
+							_selectedRace = Race::GOERN;
+							break;
+						case Powerful:
+							_selectedRace = Race::SONITE;
+							break;
+						case Steadfast:
+							_selectedRace = Race::HUSKIAN;
+							break;
+					}
 					_state = EnterName;
 					break;
 				case 'a':
@@ -171,6 +209,7 @@ void State_CharacterSelect::Update(Stack<iGameState*> *s, World *w, char c){
 				_name+= c;
 			break;
 		case BackStory:
+			//Create Player
 			s->Replace(new State_GameMode());
 			break;
 	}
