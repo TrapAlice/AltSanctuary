@@ -64,19 +64,19 @@ Character::~Character(){
 	if( inv_ )    delete inv_;
 }
 
-std::string Character::Class(){
-	switch( class_type_ ){
-		case CLASS_BARBARIAN:
+std::string Character::ClassName(){
+	switch( _class ){
+		case Class::BARBARIAN:
 			return( "Barbarian" );
-		case CLASS_PALADIN:
+		case Class::PALADIN:
 			return( "Paladin" );
-		case CLASS_ASSASSIN:
+		case Class::ASSASSIN:
 			return( "Assassin" );
-		case CLASS_WIZARD:
+		case Class::WIZARD:
 			return( "Wizard" );
-		case CLASS_RANGER:
+		case Class::RANGER:
 			return( "Ranger" );
-		case CLASS_DRUID:
+		case Class::DRUID:
 			return( "Druid" );
 	}
 	return "";

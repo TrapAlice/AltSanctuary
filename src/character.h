@@ -15,7 +15,7 @@ class Character : public Entity{
 public:
 	Character(Class class_type, Race race, std::string name);
 	~Character();
-	std::string Class();
+	std::string ClassName();
 	double      Str();
 	double      Dex();
 	double      Int();
