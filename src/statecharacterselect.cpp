@@ -23,27 +23,10 @@ void State_CharacterSelect::Update(Stack<iGameState*> *s, World *w, char c){
 	_updateFunction(s, w, c);
 }
 
-
-void State_CharacterSelect::_printBlankFace(Renderer* r){
-	r->printlns(0, "");
-	r->printlns(0, "                                   _.------._");
-	r->printlns(0, "                                  :          :");
-	r->printlns(0, "                                 :            :");
-	r->printlns(0, "                                 :            :");
-	r->printlns(0, "                                 :            :");
-	r->printlns(0, "                                 :            :");
-	r->printlns(0, "                                 :            :");
-	r->printlns(0, "                                  :          :");
-	r->printlns(0, "                                   :        :");
-	r->printlns(0, "                                _.:::.____.:::._");
-	r->printlns(0, "                            _.::::::::::::::::::::._");
-	r->printlns(0, "                          .::::::::::::::::::::::::::.");
-}
-
 void State_CharacterSelect::_SelectClassRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	_printBlankFace(r);
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
+	r->printlns(0, CLASS_GRAPHIC(Class::NOCLASS, _isMale));
+	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Select Character:");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, "[1] New Barbarian");
@@ -57,8 +40,9 @@ void State_CharacterSelect::_SelectClassRender(Renderer *r){
 
 void State_CharacterSelect::_SelectGenderRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	_printBlankFace(r);
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
+	//_printBlankFace(r);
+	r->printlns(0, CLASS_GRAPHIC(Class::NOCLASS, _isMale));
+	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Choose Gender:");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, "[1] Male");
@@ -72,9 +56,9 @@ void State_CharacterSelect::_SelectGenderRender(Renderer *r){
 
 void State_CharacterSelect::_ClassInfoRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	//CLASS_GRAPHIC(_selectedClass);
-	_printBlankFace(r);
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
+	r->printlns(0, "");
+	r->printlns(0, CLASS_GRAPHIC(_selectedClass, _isMale));
+	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, CLASS_INFO(_selectedClass));
 	r->prints(0, 23, "+-----------------------------------------------------------------------------+");
 	r->prints(27,24, "Press any key to continue");
@@ -82,14 +66,14 @@ void State_CharacterSelect::_ClassInfoRender(Renderer *r){
 
 void State_CharacterSelect::_SelectPersonalityRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	_printBlankFace(r);
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
+	r->printlns(0, "");
+	r->printlns(0, CLASS_GRAPHIC(_selectedClass, _isMale));
+	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Choose Personality:");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, "[1] Brave   = [+5 DEX, -3 STR] [First one in, last one out.]"); //Different per class
 	r->printlns(1, "[2] Rash    = [+6 STR, -4 VIT] [In battle, there's no time for thinking.]");
 	r->printlns(1, "[3] Adamant = [+3 VIT, -2 DEX] [You can't move a mountain with an ant.]");
-	r->printlns(1, "");
 	r->printlns(1, "");
 	r->printlns(1, "[A] Back");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
@@ -97,13 +81,13 @@ void State_CharacterSelect::_SelectPersonalityRender(Renderer *r){
 
 void State_CharacterSelect::_SelectGameModeRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	_printBlankFace(r);
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
+	r->printlns(0, "");
+	r->printlns(0, CLASS_GRAPHIC(_selectedClass, _isMale));
+	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Choose Game Mode:");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, "[1] Casual  = [Death is just a minor setback...] [-10%%%% Item Drop Rate]");
 	r->printlns(1, "[2] Classic = [No respawns. Death is permanent.]");
-	r->printlns(1, "");
 	r->printlns(1, "");
 	r->printlns(1, "");
 	r->printlns(1, "[A] Back");
@@ -112,14 +96,14 @@ void State_CharacterSelect::_SelectGameModeRender(Renderer *r){
 
 void State_CharacterSelect::_SelectRaceCatagoryRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	_printBlankFace(r);
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
+	r->printlns(0, "");
+	r->printlns(0, CLASS_GRAPHIC(_selectedClass, _isMale));
+	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Choose Race Catagory:");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, "[1] Mystical  = [The ability to bend the elements to your will]");
 	r->printlns(1, "[2] Powerful  = [The strength to take down enemies with brute force]");
 	r->printlns(1, "[3] Steadfast = [The endurance to stop the most devastating of foes]");
-	r->printlns(1, "");
 	r->printlns(1, "");
 	r->printlns(1, "[A] Back");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
@@ -294,10 +278,8 @@ void State_CharacterSelect::_SelectRaceUpdate(Stack<iGameState*> *s, World *w, c
 	if( c == 'a' ){
 		STATE_CHANGE(SelectRaceCatagory);
 	}
-	log_info("%d",c);
 	if( c >= 49 && c <= 51){
 		_selectedRace = races[_raceCategory][c-49];
-		log_info("%d", _selectedRace);
 		STATE_CHANGE(EnterName);
 	}
 }

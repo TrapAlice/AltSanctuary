@@ -39,7 +39,6 @@ private:
 	int            _selectedPersonality;
 	bool           _isMale;
 	std::string    _name;
-	void           _printBlankFace(Renderer *r);
 
 	std::function<void(Renderer*)>  _renderFunction;
 	void           _SelectClassRender(Renderer *r);
