@@ -72,18 +72,12 @@ void State_CharacterSelect::_SelectGenderRender(Renderer *r){
 
 void State_CharacterSelect::_ClassInfoRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	//printClassGraphic(r);
+	//CLASS_GRAPHIC(_selectedClass);
 	_printBlankFace(r);
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	r->printlns(1, "Regenerates 5%%%% of max HP each turn when health is below 50%%%%");
-	r->printlns(1, "Increased healing ability based on RAGE meter.");
-	r->printlns(1, "Gains 20 MP per Reposition.");
-	r->printlns(1, "Increased lifesteal from lifesteal abilities.");
-	r->printlns(1, "Gains additional attack power from points in VIT.");
-	r->printlns(1, "Has chance for Whirlwind [2] to break GUARDING.");
-	r->printlns(1, "Using Cleave [1] will remove ENSNARE effects.");
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	r->printlns(27, "Press any key to continue");
+	r->printlns(1, CLASS_INFO(_selectedClass));
+	r->prints(0, 23, "+-----------------------------------------------------------------------------+");
+	r->prints(27,24, "Press any key to continue");
 }
 
 void State_CharacterSelect::_SelectPersonalityRender(Renderer *r){

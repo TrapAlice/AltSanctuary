@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 enum class Class{
 	BARBARIAN,
 	PALADIN,
@@ -8,3 +10,5 @@ enum class Class{
 	DRUID,
 	RANGER,
 };
+
+std::string CLASS_INFO(Class c);
