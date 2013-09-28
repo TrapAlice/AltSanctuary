@@ -6,6 +6,7 @@
 #include "dbg.h"
 #include "class.h"
 #include "race.h"
+#include "backstory.h"
 
 #define STATE_CHANGE(state) _renderFunction = std::bind(&State_CharacterSelect::_##state##Render, this, std::placeholders::_1); \
                             _updateFunction = std::bind(&State_CharacterSelect::_##state##Update, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
@@ -40,7 +41,6 @@ void State_CharacterSelect::_SelectClassRender(Renderer *r){
 
 void State_CharacterSelect::_SelectGenderRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	//_printBlankFace(r);
 	r->printlns(0, CLASS_GRAPHIC(Class::NOCLASS, _isMale));
 	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Choose Gender:");
@@ -162,7 +162,16 @@ void State_CharacterSelect::_EnterNameRender(Renderer *r){
 }
 
 void State_CharacterSelect::_BackStoryRender(Renderer *r){
-	r->printlns(0, "This is your story");
+	r->prints(2, 2, "Your name is %s. You are a %s, of %s descent.", _name.c_str(), CLASS_NAME(_selectedClass).c_str(), RACE_NAME(_selectedRace).c_str());
+	r->prints(2, 4, BIRTH().c_str());
+	r->prints(2, 6, UPBRINGING().c_str());
+	r->prints(2, 8, REGRET().c_str());
+	r->prints(2, 10, ENJOY().c_str());
+	r->prints(2, 12, TODAY().c_str());
+	r->prints(2, 14, MISC().c_str());
+	r->prints(2, 16, SUDDENLY().c_str());
+	r->prints(2, 18, UNSURE().c_str());
+	r->prints(2, 20, "This is your story.");
 }
 
 void State_CharacterSelect::_SelectClassUpdate(Stack<iGameState*> *s, World *w, char c){

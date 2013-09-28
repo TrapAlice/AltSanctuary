@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 enum class Race{
 	HUMAN,
 	SILIAN,
@@ -11,3 +13,5 @@ enum class Race{
 	SONITE,
 	HUSKIAN,
 };
+
+std::string RACE_NAME(Race r);

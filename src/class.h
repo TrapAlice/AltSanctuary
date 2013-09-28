@@ -12,5 +12,6 @@ enum class Class{
 	NOCLASS,
 };
 
+std::string CLASS_NAME(Class c);
 std::string CLASS_INFO(Class c);
 std::string CLASS_GRAPHIC(Class c, bool isMale);

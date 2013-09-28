@@ -1,5 +1,24 @@
 #include "class.h"
 
+std::string CLASS_NAME(Class c){
+	switch(c){
+		case Class::BARBARIAN:
+			return "Barbarian";
+		case Class::PALADIN:
+			return "Paladin";
+		case Class::ASSASSIN:
+			return "Assassin";
+		case Class::WIZARD:
+			return "Wizard";
+		case Class::DRUID:
+			return "Druid";
+		case Class::RANGER:
+			return "Ranger";
+		default:
+			return "Error";
+	}
+}
+
 std::string CLASS_INFO(Class c){
 	switch(c){
 		case Class::BARBARIAN:
