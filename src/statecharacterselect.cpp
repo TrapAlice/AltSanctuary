@@ -7,213 +7,20 @@
 #include "class.h"
 #include "race.h"
 
+#define STATE_CHANGE(state) _renderFunction = std::bind(&State_CharacterSelect::_##state##Render, this, std::placeholders::_1); \
+                            _updateFunction = std::bind(&State_CharacterSelect::_##state##Update, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+
 State_CharacterSelect::State_CharacterSelect(){
 	_state = SelectClass;
-}
-
-State_CharacterSelect::~State_CharacterSelect(){}
+	STATE_CHANGE(SelectClass);
+} 
 
 void State_CharacterSelect::Render(World *w, Renderer *r){
-	switch(_state){
-		case SelectClass:
-			_SelectClassRender(r);
-			break;
-		case SelectGender:
-			_SelectGenderRender(r);
-			break;
-		case ClassInfo:
-			_ClassInfoRender(r);
-			break;
-		case SelectPersonality:
-			_SelectPersonalityRender(r);
-			break;
-		case SelectGameMode:
-			_SelectGameModeRender(r);
-			break;
-		case SelectRaceCatagory:
-			_SelectRaceCatagoryRender(r);
-			break;
-		case SelectRace:
-			_SelectRaceRender(r);
-			break;
-		case EnterName:
-			_EnterNameRender(r);
-			break;
-		case BackStory:
-			_BackStoryRender(r);
-			break;
-	}
+	_renderFunction(r);
 }
 
 void State_CharacterSelect::Update(Stack<iGameState*> *s, World *w, char c){
-	switch(_state){
-		case SelectClass:
-			switch(c){
-				case '1':
-					_selectedClass = Class::BARBARIAN;
-					_state = SelectGender;
-					break;
-				case '2':
-					_selectedClass = Class::PALADIN;
-					_state = SelectGender;
-					break;
-				case '3':
-					_selectedClass = Class::ASSASSIN;
-					_state = SelectGender;
-					break;
-				case '4':
-					_selectedClass = Class::WIZARD;
-					_state = SelectGender;
-					break;
-				case '5':
-					_selectedClass = Class::DRUID;
-					_state = SelectGender;
-					break;
-				case '6':
-					_selectedClass = Class::RANGER;
-					_state = SelectGender;
-					break;
-				case 'a':
-					s->Pop();
-					break;
-			}
-			break;
-		case SelectGender:
-			switch(c){
-				case '1':
-					_isMale = true;
-					_state = ClassInfo;
-					break;
-				case '2':
-					_isMale = false;
-					_state = ClassInfo;
-					break;
-				case 'a':
-					_state = SelectClass;
-					break;
-			}
-			break;
-		case ClassInfo:
-				_state = SelectPersonality;
-			break;
-		case SelectPersonality:
-			switch(c){
-				case '1':
-					_selectedPersonality = 1;
-					_state = SelectGameMode;
-					break;
-				case '2':
-					_selectedPersonality = 2;
-					_state = SelectGameMode;
-					break;
-				case '3':
-					_selectedPersonality = 3;
-					_state = SelectGameMode;
-					break;
-				case 'a':
-					_state = SelectGender;
-					break;
-			}
-			break;
-		case SelectGameMode:
-			switch(c){
-				case '1':
-					_state = SelectRaceCatagory;
-					break;
-				case '2':
-					_state = SelectRaceCatagory;
-					break;
-				case 'a':
-					_state = SelectPersonality;
-					break;
-			}
-			break;
-		case SelectRaceCatagory:
-			switch(c){
-				case '1':
-					_state = SelectRace;
-					_raceCategory = Mystical;
-					break;
-				case '2':
-					_state = SelectRace;
-					_raceCategory = Powerful;
-					break;
-				case '3':
-					_state = SelectRace;
-					_raceCategory = Steadfast;
-					break;
-				case 'a':
-					_state = SelectGameMode;
-					break;
-			}
-			break;
-		case SelectRace:
-			switch(c){
-				case '1':
-					switch(_raceCategory){
-						case Mystical:
-							_selectedRace = Race::HUMAN;
-							break;
-						case Powerful:
-							_selectedRace = Race::SILIAN;
-							break;
-						case Steadfast:
-							_selectedRace = Race::KRASTE;
-							break;
-					}
-					_state = EnterName;
-					break;
-				case '2':
-					switch(_raceCategory){
-						case Mystical:
-							_selectedRace = Race::FLAMMKIN;
-							break;
-						case Powerful:
-							_selectedRace = Race::JOTUNNAR;
-							break;
-						case Steadfast:
-							_selectedRace = Race::WYSPERA;
-							break;
-					}
-					_state = EnterName;
-					break;
-				case '3':
-					switch(_raceCategory){
-						case Mystical:
-							_selectedRace = Race::GOERN;
-							break;
-						case Powerful:
-							_selectedRace = Race::SONITE;
-							break;
-						case Steadfast:
-							_selectedRace = Race::HUSKIAN;
-							break;
-					}
-					_state = EnterName;
-					break;
-				case 'a':
-					_state = SelectRaceCatagory;
-					break;
-			}
-			break;
-		case EnterName:
-			if( c == 8 ){ //Backspace
-				if( _name.size() > 0 )
-					_name.pop_back();
-			}
-			if( c == 13 ){ //Return
-				_state = BackStory;
-			}
-			if( c < 65 ) break;
-			if( _name.size() < 20 )
-				_name+= c;
-			break;
-		case BackStory:
-			w->SetPlayer(new Character(_selectedClass, _selectedRace, _name));
-			s->Replace(new State_GameMode());
-			break;
-	}
-	
+	_updateFunction(s, w, c);
 }
 
 
@@ -378,4 +185,178 @@ void State_CharacterSelect::_EnterNameRender(Renderer *r){
 
 void State_CharacterSelect::_BackStoryRender(Renderer *r){
 	r->printlns(0, "This is your story");
+}
+
+void State_CharacterSelect::_SelectClassUpdate(Stack<iGameState*> *s, World *w, char c){
+	switch(c){
+		case '1':
+			_selectedClass = Class::BARBARIAN;
+			STATE_CHANGE(SelectGender);
+			break;
+		case '2':
+			_selectedClass = Class::PALADIN;
+			STATE_CHANGE(SelectGender);
+			break;
+		case '3':
+			_selectedClass = Class::ASSASSIN;
+			STATE_CHANGE(SelectGender);
+			break;
+		case '4':
+			_selectedClass = Class::WIZARD;
+			STATE_CHANGE(SelectGender);
+			break;
+		case '5':
+			_selectedClass = Class::DRUID;
+			STATE_CHANGE(SelectGender);
+			break;
+		case '6':
+			_selectedClass = Class::RANGER;
+			STATE_CHANGE(SelectGender);
+			break;
+		case 'a':
+			s->Pop();
+			break;
+	}
+}
+
+void State_CharacterSelect::_SelectGenderUpdate(Stack<iGameState*> *s, World *w, char c){
+	switch(c){
+		case '1':
+			_isMale = true;
+			STATE_CHANGE(ClassInfo);
+			break;
+		case '2':
+			_isMale = false;
+			STATE_CHANGE(ClassInfo);
+			break;
+		case 'a':
+			STATE_CHANGE(SelectClass);
+			break;
+	}
+}
+
+void State_CharacterSelect::_ClassInfoUpdate(Stack<iGameState*> *s, World *w, char c){
+	STATE_CHANGE(SelectPersonality);
+}
+
+void State_CharacterSelect::_SelectPersonalityUpdate(Stack<iGameState*> *s, World *w, char c){
+	switch(c){
+		case '1':
+			_selectedPersonality = 1;
+			STATE_CHANGE(SelectGameMode);
+			break;
+		case '2':
+			_selectedPersonality = 2;
+			STATE_CHANGE(SelectGameMode);
+			break;
+		case '3':
+			_selectedPersonality = 3;
+			STATE_CHANGE(SelectGameMode);
+			break;
+		case 'a':
+			STATE_CHANGE(SelectGender);
+			break;
+	}
+}
+
+void State_CharacterSelect::_SelectGameModeUpdate(Stack<iGameState*> *s, World *w, char c){
+	switch(c){
+		case '1':
+			STATE_CHANGE(SelectRaceCatagory);
+			break;
+		case '2':
+			STATE_CHANGE(SelectRaceCatagory);
+			break;
+		case 'a':
+			STATE_CHANGE(SelectPersonality);
+			break;
+	}
+}
+
+void State_CharacterSelect::_SelectRaceCatagoryUpdate(Stack<iGameState*> *s, World *w, char c){
+	switch(c){
+		case '1':
+			STATE_CHANGE(SelectRace);
+			_raceCategory = Mystical;
+			break;
+		case '2':
+			STATE_CHANGE(SelectRace);
+			_raceCategory = Powerful;
+			break;
+		case '3':
+			STATE_CHANGE(SelectRace);
+			_raceCategory = Steadfast;
+			break;
+		case 'a':
+			STATE_CHANGE(SelectGameMode);
+			break;
+	}
+}
+
+void State_CharacterSelect::_SelectRaceUpdate(Stack<iGameState*> *s, World *w, char c){
+	switch(c){
+		case '1':
+			switch(_raceCategory){
+				case Mystical:
+					_selectedRace = Race::HUMAN;
+					break;
+				case Powerful:
+					_selectedRace = Race::SILIAN;
+					break;
+				case Steadfast:
+					_selectedRace = Race::KRASTE;
+					break;
+			}
+			STATE_CHANGE(EnterName);
+			break;
+		case '2':
+			switch(_raceCategory){
+				case Mystical:
+					_selectedRace = Race::FLAMMKIN;
+					break;
+				case Powerful:
+					_selectedRace = Race::JOTUNNAR;
+					break;
+				case Steadfast:
+					_selectedRace = Race::WYSPERA;
+					break;
+			}
+			STATE_CHANGE(EnterName);
+			break;
+		case '3':
+			switch(_raceCategory){
+				case Mystical:
+					_selectedRace = Race::GOERN;
+					break;
+				case Powerful:
+					_selectedRace = Race::SONITE;
+					break;
+				case Steadfast:
+					_selectedRace = Race::HUSKIAN;
+					break;
+			}
+			STATE_CHANGE(EnterName);
+			break;
+		case 'a':
+			STATE_CHANGE(SelectRaceCatagory);
+			break;
+	}
+}
+
+void State_CharacterSelect::_EnterNameUpdate(Stack<iGameState*> *s, World *w, char c){
+	if( c == 8 ){ //Backspace
+		if( _name.size() > 0 )
+			_name.pop_back();
+	}
+	if( c == 13 ){ //Return
+		STATE_CHANGE(BackStory);
+	}
+	if( c < 65 ) return;
+	if( _name.size() < 20 )
+		_name+= c;
+}
+
+void State_CharacterSelect::_BackStoryUpdate(Stack<iGameState*> *s, World *w, char c){
+	w->SetPlayer(new Character(_selectedClass, _selectedRace, _name));
+	s->Replace(new State_GameMode());
 }
