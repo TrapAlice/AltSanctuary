@@ -294,52 +294,17 @@ void State_CharacterSelect::_SelectRaceCatagoryUpdate(Stack<iGameState*> *s, Wor
 }
 
 void State_CharacterSelect::_SelectRaceUpdate(Stack<iGameState*> *s, World *w, char c){
-	switch(c){
-		case '1':
-			switch(_raceCategory){
-				case Mystical:
-					_selectedRace = Race::HUMAN;
-					break;
-				case Powerful:
-					_selectedRace = Race::SILIAN;
-					break;
-				case Steadfast:
-					_selectedRace = Race::KRASTE;
-					break;
-			}
-			STATE_CHANGE(EnterName);
-			break;
-		case '2':
-			switch(_raceCategory){
-				case Mystical:
-					_selectedRace = Race::FLAMMKIN;
-					break;
-				case Powerful:
-					_selectedRace = Race::JOTUNNAR;
-					break;
-				case Steadfast:
-					_selectedRace = Race::WYSPERA;
-					break;
-			}
-			STATE_CHANGE(EnterName);
-			break;
-		case '3':
-			switch(_raceCategory){
-				case Mystical:
-					_selectedRace = Race::GOERN;
-					break;
-				case Powerful:
-					_selectedRace = Race::SONITE;
-					break;
-				case Steadfast:
-					_selectedRace = Race::HUSKIAN;
-					break;
-			}
-			STATE_CHANGE(EnterName);
-			break;
-		case 'a':
-			STATE_CHANGE(SelectRaceCatagory);
-			break;
+	Race races[3][3] = {{Race::HUMAN, Race::SILIAN, Race::KRASTE},
+	                  {Race::FLAMMKIN, Race::JOTUNNAR, Race:: WYSPERA},
+	                  {Race::GOERN, Race::SONITE, Race::HUSKIAN}};
+	if( c == 'a' ){
+		STATE_CHANGE(SelectRaceCatagory);
+	}
+	log_info("%d",c);
+	if( c >= 49 && c <= 51){
+		_selectedRace = races[_raceCategory][c-49];
+		log_info("%d", _selectedRace);
+		STATE_CHANGE(EnterName);
 	}
 }
 
