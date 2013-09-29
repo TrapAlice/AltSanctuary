@@ -27,7 +27,7 @@ void State_CharacterSelect::Update(Stack<iGameState*> *s, World *w, char c){
 void State_CharacterSelect::_SelectClassRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(0, CLASS_GRAPHIC(Class::NOCLASS, _isMale));
-	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
+	r->prints(0, 14, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Select Character:");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, "[1] New Barbarian");
@@ -42,7 +42,7 @@ void State_CharacterSelect::_SelectClassRender(Renderer *r){
 void State_CharacterSelect::_SelectGenderRender(Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(0, CLASS_GRAPHIC(Class::NOCLASS, _isMale));
-	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
+	r->prints(0, 14, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Choose Gender:");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, "[1] Male");
@@ -71,10 +71,8 @@ void State_CharacterSelect::_SelectPersonalityRender(Renderer *r){
 	r->prints(0, 15, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Choose Personality:");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	r->printlns(1, "[1] Brave   = [+5 DEX, -3 STR] [First one in, last one out.]"); //Different per class
-	r->printlns(1, "[2] Rash    = [+6 STR, -4 VIT] [In battle, there's no time for thinking.]");
-	r->printlns(1, "[3] Adamant = [+3 VIT, -2 DEX] [You can't move a mountain with an ant.]");
-	r->printlns(1, "");
+	r->printlns(1, CLASS_PERSONALITY(_selectedClass));
+	r->prints(1, 21, "");
 	r->printlns(1, "[A] Back");
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 }
@@ -227,22 +225,12 @@ void State_CharacterSelect::_ClassInfoUpdate(Stack<iGameState*> *s, World *w, ch
 }
 
 void State_CharacterSelect::_SelectPersonalityUpdate(Stack<iGameState*> *s, World *w, char c){
-	switch(c){
-		case '1':
-			_selectedPersonality = 1;
-			STATE_CHANGE(SelectGameMode);
-			break;
-		case '2':
-			_selectedPersonality = 2;
-			STATE_CHANGE(SelectGameMode);
-			break;
-		case '3':
-			_selectedPersonality = 3;
-			STATE_CHANGE(SelectGameMode);
-			break;
-		case 'a':
-			STATE_CHANGE(SelectGender);
-			break;
+	if( c == 'a' ){
+		STATE_CHANGE(SelectGender);
+	}
+	if( c >= 49 && c <= 51 ){
+		_selectedPersonality = c - 49;
+		STATE_CHANGE(SelectGameMode);
 	}
 }
 
@@ -307,6 +295,6 @@ void State_CharacterSelect::_EnterNameUpdate(Stack<iGameState*> *s, World *w, ch
 }
 
 void State_CharacterSelect::_BackStoryUpdate(Stack<iGameState*> *s, World *w, char c){
-	w->SetPlayer(new Character(_selectedClass, _selectedRace, _name));
+	w->SetPlayer(new Character(_selectedClass, _selectedRace, _name, _selectedPersonality));
 	s->Replace(new State_GameMode());
 }

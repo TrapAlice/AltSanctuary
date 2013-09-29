@@ -6,57 +6,43 @@
 #include <stdlib.h>
 #include "dbg.h"
 
-Character::Character(Class class_type, Race race, std::string name){
+Character::Character(Class class_type, Race race, std::string name, int personality){
 	skills_ = NULL;
 	inv_ = NULL;
 	_class = class_type;
 	_name = name;
 	switch( _class ){
 		case Class::BARBARIAN:
-			_BarbarianInit();
+			_BarbarianInit(personality);
 			break;
 		case Class::PALADIN:
-			_PaladinInit();
+			_PaladinInit(personality);
 			break;
 		case Class::ASSASSIN:
-			_AssassinInit();
+			_AssassinInit(personality);
 			break;
 		case Class::WIZARD:
-			_WizardInit();
+			_WizardInit(personality);
 			break;
 		case Class::RANGER:
-			_RangerInit();
+			_RangerInit(personality);
 			break;
 		case Class::DRUID:
-			_DruidInit();
+			_DruidInit(personality);
 			break;
 		default:
 			break;
 	}
 
-	max_hp_         = vitality_ * vitality_mod_;
-	hp_             = max_hp_;
-	attack_power_   = strength_ * power_mod_;
-	max_initiative_ = 100;
+	_max_hp         = (_vitality * _vitality_mod) * (1 + 0.01 * _vitality);
+	_hp             = _max_hp;
+	_attack_power   = _strength * _power_mod;
+	_armor_value    = 0;
 
-	skills_ = new Skill*[8];	
-	AddSkill(Skill::CreateSkill(skill_ranger_poisonarrow));
-	AddSkill(Skill::CreateSkill(skill_ranger_salve));
-	AddSkill(Skill::CreateSkill(skill_ranger_strongdraw));
-	AddSkill(Skill::CreateSkill(skill_ranger_firstaid));
-	AddSkill(Skill::CreateSkill(skill_ranger_cripplingshot));
-	AddSkill(Skill::CreateSkill(skill_ranger_preparation));
-	AddSkill(Skill::CreateSkill(skill_ranger_magicalarrow));
-	AddSkill(Skill::CreateSkill(skill_ranger_steadyshot));
-	SetSkill(0, 0);
-	SetSkill(1, 1);
-	SetSkill(2, 2);
-	SetSkill(3, 3);
-	SetSkill(4, 4);
-	SetSkill(5, 5);
-	SetSkill(6, 6);
-	SetSkill(7, 7);
-	inv_ = new Inventory();
+	if( _race = Race::HUMAN ){
+		_max_mp += 10;
+	}
+	_mp = _max_mp;
 }
 
 Character::~Character(){
@@ -119,56 +105,74 @@ double     Character::MaxInitiative()    { return( max_initiative_ ); }
 Inventory* Character::Inv()              { return( inv_ ); }
 int        Character::SkillLibrarySize() { return( skill_library_.size() ); }
 
-void Character::_BarbarianInit(){
-	strength_     = 15;
-	dexterity_    = 6;
-	intelligence_ = 0;
-	vitality_     = 26;
-	vitality_mod_ = 28;
-	power_mod_    = 3;
+void Character::_BarbarianInit(int personality){
+	_strength     = 30 - (personality == 1)*3 + (personality == 2)*6;
+	_dexterity    = 8  + (personality == 1)*5 - (personality == 3)*2;
+	_intelligence = 1;
+	_vitality     = 30 - (personality == 2)*4 + (personality == 3)*3;
+	_wisdom       = 1;
+	_attack_mod   = 20;
+	_vitality_mod = 20;
+	_power_mod    = 2;
+	_max_mp       = 60;
 }
 
-void Character::_PaladinInit(){
-	strength_     = 16;
-	dexterity_    = 0;
-	intelligence_ = 11;
-	vitality_     = 26;
-	vitality_mod_ = 26;
-	power_mod_    = 3;
+void Character::_PaladinInit(int personality){
+	_strength     = 6  + (personality == 2)*3 - (personality == 3)*4;
+	_dexterity    = 1  + (personality == 1)*5;
+	_intelligence = 9  - (personality == 1)*3;
+	_vitality     = 31 - (personality == 2)*2 + (personality == 3)*6;
+	_wisdom       = 23;
+	_attack_mod   = 20 + _intelligence + _wisdom;
+	_vitality_mod = 18;
+	_power_mod    = 1;
+	_max_mp       = 60;
 }
 
-void Character::_AssassinInit(){
-	strength_     = 12;
-	dexterity_    = 16;
-	intelligence_ = 0;
-	vitality_     = 20;
-	vitality_mod_ = 26;
-	power_mod_    = 3;
+void Character::_AssassinInit(int personality){
+	_strength     = 6  - (personality == 2)*2 + (personality == 3)*5;
+	_dexterity    = 35 + (personality == 1)*6 + (personality == 2)*3 - (personality == 3)*3;
+	_intelligence = 1;
+	_vitality     = 27 - (personality == 1)*4;
+	_wisdom       = 1;
+	_attack_mod   = 20 + _dexterity;
+	_vitality_mod = 18;
+	_power_mod    = 1;
+	_max_mp       = 60;
 }
 
-void Character::_WizardInit(){
-	strength_     = 21;
-	dexterity_    = 0;
-	intelligence_ = 31;
-	vitality_     = 16;
-	vitality_mod_ = 26;
-	power_mod_    = 1;
+void Character::_WizardInit(int personality){
+	_strength     = 6  - (personality == 2)*2;
+	_dexterity    = 1  + (personality == 3)*6;
+	_intelligence = 28 + (personality == 1)*5 + (personality == 2)*3 - (personality == 3)*4;
+	_vitality     = 27 - (personality == 1)*3;
+	_wisdom       = 9;
+	_attack_mod   = 20 + _intelligence + _wisdom;
+	_vitality_mod = 18;
+	_power_mod    = 1;
+	_max_mp       = 80;
 }
 
-void Character::_RangerInit(){
-	strength_     = 11;
-	dexterity_    = 16;
-	intelligence_ = 0;
-	vitality_     = 15;
-	vitality_mod_ = 24;
-	power_mod_    = 3;
+void Character::_DruidInit(int personality){
+	_strength     = 28 + (personality == 1)*3 - (personality == 2)*4 - (personality == 3)*3;
+	_dexterity    = 1;
+	_intelligence = 1  - (personality == 1)*2 +  (personality == 2)*6;
+	_vitality     = 31 + (personality == 3)*4;
+	_wisdom       = 9;
+	_attack_mod   = 20 + _intelligence;
+	_vitality_mod = 22;
+	_power_mod    = 2;
+	_max_mp       = 60;
 }
 
-void Character::_DruidInit(){
-	strength_     = 13;
-	dexterity_    = 0;
-	intelligence_ = 6;
-	vitality_     = 31;
-	vitality_mod_ = 32;
-	power_mod_    = 2;
+void Character::_RangerInit(int personality){
+	_strength     = 13 - (personality == 2)*3 - (personality == 3)*2;
+	_dexterity    = 28 + (personality == 1)*6 + (personality == 2)*5;
+	_intelligence = 1;
+	_vitality     = 27 - (personality == 1)*4 + (personality == 3)*3;
+	_wisdom       = 1;
+	_attack_mod   = 20 + _dexterity;
+	_vitality_mod = 18;
+	_power_mod    = 1;
+	_max_mp       = 60;
 }

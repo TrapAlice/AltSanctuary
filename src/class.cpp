@@ -37,6 +37,25 @@ std::string CLASS_INFO(Class c){
 	return "Error";
 }
 
+std::string CLASS_PERSONALITY(Class c){
+	switch(c){
+		case Class::BARBARIAN:
+			return "[1] Brave   = [+5 DEX, -3 STR] [First one in, last one out.]\n[2] Rash    = [+6 STR, -4 VIT] [In battle, there's no time for thinking.]\n[3] Adamant = [+3 VIT, -2 DEX] [You can't move a mountain with an ant.]";
+		case Class::PALADIN:
+			return "[1] Gentle = [+5 DEX, -3 INT] [The cleanest kill is the most humane.]\n[2] Bold   = [+3 STR, -2 VIT] [When taking a risk, sometimes you need faith.]\n[3] Docile = [+6 VIT, -4 STR] [Cast HEAL on spiders as a child.]";
+		case Class::ASSASSIN:
+			return "[1] Hasty   = [+6 DEX, -4 VIT] [Do it fast and do it quick.]\n[2] Serious = [+3 DEX, -2 STR] [Death is no laughing matter.]\n[3] Quiet   = [+5 STR, -3 DEX] [It's always the quiet ones.]";
+		case Class::WIZARD:
+			return "[1] Modest  = [+5 INT, -3 VIT] [Oh, that fiery explosion was nothing.]\n[2] Mild    = [+3 INT, -2 STR] [Most interesting feature: stamp collection.]\n[3] Relaxed = [+6 DEX, -4 INT] [A calm mind is an oasis in chaos.]";
+		case Class::DRUID:
+			return "[1] Quirky = [+3 STR, -2 INT] [Give me some meatloaf and a ham sandwich.]\n[2] Calm   = [+6 INT, -4 STR] [Nothing beats the stillness of a pond.]\n[3] Hearty = [+4 VIT, -3 STR] [I always eat eggs in the morning.]";
+		case Class::RANGER:
+			return "[1] Timid   = [+6 DEX, -4 VIT] [Swordfighting is just so socially awkward.]\n[2] Careful = [+5 DEX, -3 STR] [Did I remember to turn off the furnace?]\n[3] Naive   = [+3 VIT, -2 STR] [Can't we all just get along?]";
+		default:
+			return "Error";
+	}
+}
+
 std::string CLASS_GRAPHIC(Class c, bool isMale){
 	switch(c){
 		case Class::BARBARIAN:

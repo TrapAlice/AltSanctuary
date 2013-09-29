@@ -20,6 +20,5 @@ std::string RACE_NAME(Race r){
 			return "Sonite";
 		case Race::HUSKIAN:
 			return "Huskian";
-
 	}
 }

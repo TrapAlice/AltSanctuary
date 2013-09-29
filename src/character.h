@@ -13,7 +13,7 @@ class Inventory;
 
 class Character : public Entity{
 public:
-	Character(Class class_type, Race race, std::string name);
+	Character(Class class_type, Race race, std::string name, int personality);
 	~Character();
 	std::string ClassName();
 	double      Str();
@@ -35,26 +35,27 @@ private:
 	Class       _class;
 	Race        _race;
 	std::string _name;
-	double     strength_;
-	double     dexterity_;
-	double     intelligence_;
-	double     vitality_;
-	double     wisdom_;
-	double     power_mod_;
-	double     vitality_mod_;
-	int        attack_power_;
-	double     initiative_;
-	double     max_initiative_;
+	double      _strength;
+	double      _dexterity;
+	double      _intelligence;
+	double      _vitality;
+	double      _wisdom;
+	double      _power_mod;
+	double      _vitality_mod;
+	double      _attack_mod;
+	double      _mp;
+	double      _max_mp;
+	double      _armor_value;
 	Inventory *inv_;
 	Skill    **skills_;
 	std::vector<Skill*> skill_library_;
 	
-	void _BarbarianInit();
-	void _PaladinInit();
-	void _AssassinInit();
-	void _WizardInit();
-	void _RangerInit();
-	void _DruidInit();
+	void _BarbarianInit(int personality);
+	void _PaladinInit(int personality);
+	void _AssassinInit(int personality);
+	void _WizardInit(int personality);
+	void _RangerInit(int personality);
+	void _DruidInit(int personality);
 };
 
 #endif
