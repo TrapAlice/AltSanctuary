@@ -3,6 +3,7 @@
 #include <string>
 
 enum class Graphic{
+	MAIN_MENU,
 	BARBARIAN_M,
 	BARBARIAN_F,
 	PALADIN_M,
