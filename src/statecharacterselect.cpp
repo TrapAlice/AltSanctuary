@@ -1,5 +1,6 @@
 #include "statecharacterselect.h"
 #include "stategamemode.h"
+#include "stateconversation.h"
 #include "renderer.h"
 #include "character.h"
 #include "world.h"
@@ -297,4 +298,5 @@ void State_CharacterSelect::_EnterNameUpdate(Stack<iGameState*> *s, World *w, ch
 void State_CharacterSelect::_BackStoryUpdate(Stack<iGameState*> *s, World *w, char c){
 	w->SetPlayer(new Character(_selectedClass, _selectedRace, _name, _selectedPersonality));
 	s->Replace(new State_GameMode());
+	s->Push(new State_Conversation(Conversation::STRANGE_ENCOUNTER));
 }

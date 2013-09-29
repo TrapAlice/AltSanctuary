@@ -16,7 +16,8 @@ public:
 	void Render( World *w, Renderer *r);
 	void Update( Stack<iGameState*> *s, World *w, char c);
 private:
-	Graphic         _speaker;
+	Graphic         _speaker_graphic;
 	std::string     _speaker_name;
 	std::vector<std::string> _text;
+	unsigned int    _position;
 };
