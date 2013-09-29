@@ -19,8 +19,8 @@ public:
 	void        ClearConditions();
 protected:
 	std::string  name_;
-	int          hp_;
-	int          max_hp_;
+	int          _hp;
+	int          _max_hp;
 	std::vector<Condition*> conditions_;
 };
 

@@ -9,7 +9,7 @@ void ranger_poisonarrow(int *damage, Character* c, Enemy* e){
 }
 
 void ranger_salve(int *damage, Character* c, Enemy* e){
-	float dex_scale;
+	/*float dex_scale;
 	float atk_mod;
 	if( c->Initiative() <= 20 ){
 		dex_scale = 0.5;
@@ -26,11 +26,11 @@ void ranger_salve(int *damage, Character* c, Enemy* e){
 	}
 
 	*damage += c->Dex() * dex_scale;
-	*damage += c->Power() * atk_mod;
+	*damage += c->Power() * atk_mod;*/
 }
 
 void ranger_firstaid(int *damage, Character* c, Enemy* e){
-	if( c->Initiative() <= 20 ){
+	/*if( c->Initiative() <= 20 ){
 		c->GainCondition(Condition::CreateCondition(Condition_Ranger_HealTier1));
 		c->AdjustInitiative(-20);
 	} else if( c->Initiative() <= 40 ){
@@ -42,7 +42,7 @@ void ranger_firstaid(int *damage, Character* c, Enemy* e){
 	} else {
 		c->GainCondition(Condition::CreateCondition(Condition_Ranger_HealTier4));
 		c->AdjustInitiative(-80);
-	}
+	}*/
 }
 
 void ranger_cripplingshot(int *damage, Character* c, Enemy* e){
@@ -54,6 +54,6 @@ void ranger_preparation(int *damage, Character* c, Enemy* e){
 }
 
 void ranger_magicalarrow(int *damage, Character* c, Enemy* e){
-	*damage += c->Power() * (1.5 + c->Initiative()/50);
-	c->TakeDamage(-*damage*0.05);
+	/**damage += c->Power() * (1.5 + c->Initiative()/50);
+	c->TakeDamage(-*damage*0.05);*/
 }

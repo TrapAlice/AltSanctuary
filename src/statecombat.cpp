@@ -37,7 +37,7 @@ void State_Combat::Render(World *w, Renderer *r){
 	//Player's stats
 	r->prints(1, 7, "You");
 	r->prints(1, 8, "ini");
-	r->prints(5, 8, "%0.1f", c->Initiative());
+	//r->prints(5, 8, "%0.1f", c->Initiative());
 	r->prints(10, 7, "%d / %d", c->Hp(), c->MaxHp());
 
 	//Enemy's stats
@@ -89,10 +89,10 @@ void State_Combat::Update(Stack<iGameState*> *s, World *w, char c){
 			case '3':
 			case '4':
 				Skill* selected_skill = w->Player()->GetSkill(c-'1'+skill_offset_*4);
-				if(w->Player()->Initiative() >= 0-selected_skill->Init()){
+				/*if(w->Player()->Initiative() >= 0-selected_skill->Init()){
 					_PlayerAttack(w, selected_skill);
 					action_taken = true;
-				}
+				}*/
 				break;
 		}
 	} else {

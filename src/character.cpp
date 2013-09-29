@@ -39,7 +39,7 @@ Character::Character(Class class_type, Race race, std::string name, int personal
 	_attack_power   = _strength * _power_mod;
 	_armor_value    = 0;
 
-	if( _race = Race::HUMAN ){
+	if( _race == Race::HUMAN ){
 		_max_mp += 10;
 	}
 	_mp = _max_mp;
@@ -76,13 +76,6 @@ void Character::SetSkill(int pos, int libraryPos){
 	skills_[pos] = skill_library_[libraryPos];
 }
 
-void Character::AdjustInitiative(int amount){
-	initiative_ += amount;
-	if( initiative_ > max_initiative_ ){
-		initiative_ = max_initiative_;
-	}
-}
-
 std::string Character::SkillSummary(int pos){
 	if( skills_[pos] ){
 		return skills_[pos]->GetSummary();
@@ -94,14 +87,12 @@ Skill* Character::GetSkill(int pos){
 	return skills_[pos];
 }
 
-double     Character::Str()              { return( strength_ ); }
-double     Character::Dex()              { return( dexterity_ ); }
-double     Character::Int()              { return( intelligence_ ); }
-double     Character::Vit()              { return( vitality_ ); }
-double     Character::Wis()              { return( wisdom_ ); }
-int        Character::Power()            { return( attack_power_ ); }
-double     Character::Initiative()       { return( initiative_ ); }
-double     Character::MaxInitiative()    { return( max_initiative_ ); }
+double     Character::Str()              { return( _strength ); }
+double     Character::Dex()              { return( _dexterity ); }
+double     Character::Int()              { return( _intelligence ); }
+double     Character::Vit()              { return( _vitality ); }
+double     Character::Wis()              { return( _wisdom ); }
+int        Character::Power()            { return( _attack_power ); }
 Inventory* Character::Inv()              { return( inv_ ); }
 int        Character::SkillLibrarySize() { return( skill_library_.size() ); }
 

@@ -12,9 +12,9 @@ void Entity::TakeDamage(double damage){
 	if( damage > 0 ){
 		CycleConditions(3, &damage, NULL);
 	}
-	hp_-=damage;
-	if( hp_ > max_hp_ ){
-		hp_ = max_hp_;
+	_hp-=damage;
+	if( _hp > _max_hp ){
+		_hp = _max_hp;
 	}
 }
 
@@ -53,5 +53,5 @@ void Entity::ClearConditions(){
 }
 
 std::string Entity::Name()  { return( name_ ); }
-int         Entity::Hp()    { return( hp_ ); }
-int         Entity::MaxHp() { return( max_hp_ ); }
+int         Entity::Hp()    { return( _hp ); }
+int         Entity::MaxHp() { return( _max_hp ); }

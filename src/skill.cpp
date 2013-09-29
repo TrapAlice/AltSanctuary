@@ -30,7 +30,7 @@ int Skill::Attack(Character *character, Enemy *enemy){
 		(skill_function_)(&damage_delt, character, enemy);
 	}
 	if( init_ ){
-		character->AdjustInitiative(init_);
+		//character->AdjustInitiative(init_);
 	}
 	return damage_delt;
 }

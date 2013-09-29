@@ -22,9 +22,6 @@ public:
 	double      Vit();
 	double      Wis();
 	int         Power();
-	double      Initiative();
-	double      MaxInitiative();
-	void        AdjustInitiative( int amount );
 	void        AddSkill( Skill* skill );
 	void        SetSkill( int pos, int libraryPos );
 	Inventory*  Inv();
@@ -43,6 +40,7 @@ private:
 	double      _power_mod;
 	double      _vitality_mod;
 	double      _attack_mod;
+	double      _attack_power;
 	double      _mp;
 	double      _max_mp;
 	double      _armor_value;
