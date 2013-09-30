@@ -7,9 +7,12 @@
 #include "skill.h"
 #include "enemy.h"
 #include "world.h"
+#include "act.h"
+#include "zone.h"
 
 void State_GameMode::Render(World *w, Renderer *r){
 	Character *c = w->Player();
+	Act *a = w->GetCurrentAct();
 	r->printlns(0, "");
 	r->printlns(0, "                                    ,sdPBbs.");
 	r->printlns(0, "                      ,dBb.       ,d$$$$$$$$b.                .   ._, |_");
@@ -27,7 +30,9 @@ void State_GameMode::Render(World *w, Renderer *r){
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
 	r->printlns(2, "Quest: Search the Grassy Fields for another Gate."); //Current quest
 	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	r->printlns(0, "| [1] -> Grassy Fields    (01-05) |       |                 | [R] Heal [>>>]  |");
+	r->printlns(0, "|                                 |       |                 | [R] Heal [>>>]  |");
+	r->prints(2, 17, "[1] %s", a->getZone(1)->getName().c_str());
+	r->prints(26, 17, "(%s)", a->getZone(1)->getLevelRange().c_str());
 	r->printlns(0, "|                                 |       |                 |                 |");
 	r->printlns(0, "|                                 |       |                 |                 |");
 	r->printlns(0, "|                                 |       |-----------------------------------|");
@@ -39,5 +44,7 @@ void State_GameMode::Render(World *w, Renderer *r){
 }
 
 void State_GameMode::Update(Stack<iGameState*> *s, World *w, char c){
-
+	if(c == '1'){
+		s->Push(new State_Combat());
+	}
 }
