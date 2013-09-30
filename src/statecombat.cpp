@@ -22,15 +22,16 @@ State_Combat::State_Combat(Enemy *enemy){
 
 void State_Combat::Render(World *w, Renderer *r){
 	Character *c = w->Player();
+	Enemy *e = current_enemy_;
 	r->prints(0, 1, "> Monster taunt");
-	r->prints(2, 3, "HP: %d / %d", c->Hp(), c->MaxHp()); //Monster's stats
-	r->prints(18,3, "ATK: %d - %d", c->MinPower(), c->MaxPower());
-	r->prints(4, 4, "[::::::::::] [-]");
+	r->prints(2, 3, "HP: %d / %d", e->Hp(), e->MaxHp()); //Monster's stats
+	r->prints(18,3, "ATK: %d - %d", e->MinPower(), e->MaxPower());
+	//r->prints(4, 4, "[::::::::::] [-]");
 	r->prints(0, 7, "> You are ready for battle.");
 	r->prints(2, 9, "HP: %d / %d", c->Hp(), c->MaxHp());
 	r->prints(18,9, "ATK: %d - %d", c->MinPower(), c->MaxPower());
 	r->prints(35,9, "MP: %d / %d", c->Mp(), c->MaxMp());
-	r->prints(4, 10, "[::::::::::::::::::::]");
+	//r->prints(4, 10, "[::::::::::::::::::::]");
 	r->prints(0, 12, "+-----------------------------------------------------------------------------+");
 	r->printlns(1, "[1] Cleave           (Starter---)     ( No MP, 50%%%% ATK + 87 DMG)");
 	r->printlns(1, "[2] Whirlwind        (Starter---)     (+10 MP, 2X ATK, -174 HP, 73%%%% HIT)");

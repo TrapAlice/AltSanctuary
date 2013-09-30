@@ -18,6 +18,14 @@ void Entity::TakeDamage(double damage){
 	}
 }
 
+int Entity::MinPower(){
+	return (double)_attack_power * 0.75;
+}
+
+int Entity::MaxPower(){
+	return (double)_attack_power * 1.25;
+}
+
 void Entity::CycleConditions(int state, double *damage, Entity *opponent){
 	for( unsigned int x = 0; x < conditions_.size(); ++x ){
 		switch( state ){

@@ -87,12 +87,16 @@ Skill* Character::GetSkill(int pos){
 	return skills_[pos];
 }
 
-double     Character::Str()              { return( _strength ); }
-double     Character::Dex()              { return( _dexterity ); }
-double     Character::Int()              { return( _intelligence ); }
-double     Character::Vit()              { return( _vitality ); }
-double     Character::Wis()              { return( _wisdom ); }
+
+
+int        Character::Str()              { return( _strength ); }
+int        Character::Dex()              { return( _dexterity ); }
+int        Character::Int()              { return( _intelligence ); }
+int        Character::Vit()              { return( _vitality ); }
+int        Character::Wis()              { return( _wisdom ); }
 int        Character::Power()            { return( _attack_power ); }
+int        Character::Mp()               { return( _mp ); }
+int        Character::MaxMp()            { return( _max_mp ); }
 Inventory* Character::Inv()              { return( inv_ ); }
 int        Character::SkillLibrarySize() { return( skill_library_.size() ); }
 

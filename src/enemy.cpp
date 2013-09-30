@@ -9,6 +9,7 @@ Enemy::Enemy(std::string name, int max_hp, double patk, double matk){
 	_max_hp   = max_hp;
 	patk_  = patk;
 	matk_ = matk;
+	_attack_power = 50;
 }
 
 Enemy::~Enemy(){}

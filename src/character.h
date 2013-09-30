@@ -24,8 +24,6 @@ public:
 	int         Power();
 	int         Mp();
 	int         MaxMp();
-	int         MinPower();
-	int         MaxPower();
 	void        AddSkill( Skill* skill );
 	void        SetSkill( int pos, int libraryPos );
 	Inventory*  Inv();
@@ -44,7 +42,6 @@ private:
 	int         _power_mod;
 	int         _vitality_mod;
 	int         _attack_mod;
-	int         _attack_power;
 	int         _mp;
 	int         _max_mp;
 	int         _armor_value;

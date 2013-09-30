@@ -286,8 +286,8 @@ void State_CharacterSelect::_EnterNameUpdate(Stack<iGameState*> *s, World *w, ch
 	if( c == 8 ){ //Backspace
 		if( _name.size() > 0 )
 			_name.pop_back();
-	}
-	if( c == 13 ){ //Return
+	}(
+		if( c == 13 && _name.size() > 0)){ //Return
 		STATE_CHANGE(BackStory);
 	}
 	if( c < 65 ) return;
