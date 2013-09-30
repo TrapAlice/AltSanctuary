@@ -15,6 +15,7 @@ std::string CLASS_NAME(Class c){
 			return "Druid";
 		case Class::RANGER:
 			return "Ranger";
+		case Class::NOCLASS:
 		default:
 			return "Error";
 	}
@@ -34,8 +35,10 @@ std::string CLASS_INFO(Class c){
 			return "After casting ULT, MAX HP increases temporarily.\nWhen ULT is fully charged, regenerate a small amount of HP per turn.\nGains 20 MP per Reposition.\nGains additional damage from points in Intelligence.\nIncreased damage with Slash [1], scaling with length of battle.\nGains chance to MARK enemies with Rabid Lunge [2], up to three MARKS.\nCasting ULT consumes all MARKs for bonus DMG.";
 		case Class::RANGER:
 			return "When ULT is fully charged, dodge chance is increased threefold.\nGains 5 MP upon dodging and dazing enemies when SPIRIT meter is maxed.\nGains 25 MP per Reposition.\nSmall Chance to MARK when attacking. At 3rd MARK, enemy takes bonus damage.\nHas decent chance to CONFUSE enemies with Infused Bolt [W].\nUsing Guided Arrow [1] will interrupt CHARGING enemies.\nCasting Heal will DAZE enemies.";
+		case Class::NOCLASS:
+		default:
+			return "Error";
 	}
-	return "Error";
 }
 
 std::string CLASS_PERSONALITY(Class c){
@@ -52,6 +55,7 @@ std::string CLASS_PERSONALITY(Class c){
 			return "[1] Quirky = [+3 STR, -2 INT] [Give me some meatloaf and a ham sandwich.]\n[2] Calm   = [+6 INT, -4 STR] [Nothing beats the stillness of a pond.]\n[3] Hearty = [+4 VIT, -3 STR] [I always eat eggs in the morning.]";
 		case Class::RANGER:
 			return "[1] Timid   = [+6 DEX, -4 VIT] [Swordfighting is just so socially awkward.]\n[2] Careful = [+5 DEX, -3 STR] [Did I remember to turn off the furnace?]\n[3] Naive   = [+3 VIT, -2 STR] [Can't we all just get along?]";
+		case Class::NOCLASS:
 		default:
 			return "Error";
 	}
@@ -83,7 +87,8 @@ std::string CLASS_GRAPHIC(Class c, bool isMale){
 			if( isMale )
 				return GRAPHIC(Graphic::RANGER_M);
 			return GRAPHIC(Graphic::RANGER_F);
-	default:
-		return GRAPHIC(Graphic::BLANK_FACE);
+		case Class::NOCLASS:
+		default:
+			return GRAPHIC(Graphic::BLANK_FACE);
 	}
 }
