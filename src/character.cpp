@@ -43,6 +43,15 @@ Character::Character(Class class_type, Race race, std::string name, int personal
 		_max_mp += 10;
 	}
 	_mp = _max_mp;
+
+	AddSkill(Skill::CreateSkill(SKILL::REPOSITION));
+	AddSkill(Skill::CreateSkill(SKILL::BARBARIAN_CLEAVE));
+	AddSkill(Skill::CreateSkill(SKILL::BARBARIAN_WHIRLWIND));
+	AddSkill(Skill::CreateSkill(SKILL::BARBARIAN_FRENZY));
+	AddSkill(Skill::CreateSkill(SKILL::BARBARIAN_EXBASH));
+	AddSkill(Skill::CreateSkill(SKILL::BARBARIAN_EXWHIRLWIND));
+	AddSkill(Skill::CreateSkill(SKILL::BARBARIAN_SIESMICSLAM));
+	AddSkill(Skill::CreateSkill(SKILL::FINALBLOW));
 }
 
 Character::~Character(){
@@ -78,15 +87,41 @@ void Character::SetSkill(int pos, int libraryPos){
 
 std::string Character::SkillSummary(int pos){
 	if( skills_[pos] ){
-		return skills_[pos]->GetSummary();
+		//return skills_[pos]->GetSummary();
 	}
 	return "";
 }
 
 Skill* Character::GetSkill(int pos){
-	return skills_[pos];
+	return skill_library_[pos];
 }
 
+bool Character::EnoughMp(int amount){
+	return _mp >= amount;
+}
+
+void Character::RestoreMp(int amount){
+	_mp += amount;
+	if( _mp > _max_mp ){
+		_mp = _max_mp;
+	}
+}
+
+void Character::UseMp(int amount){
+	_mp = _mp < amount ? 0 : _mp-amount;
+}
+
+void Character::IncreaseCombo(){
+	++_combo_count;
+}
+
+void Character::ResetCombo(){
+	_combo_count = 0;
+}
+
+int Character::PowerMulti(double multiplier){
+	return _attack_power * multiplier;
+}
 
 
 int        Character::Str()              { return( _strength ); }
@@ -99,6 +134,8 @@ int        Character::Mp()               { return( _mp ); }
 int        Character::MaxMp()            { return( _max_mp ); }
 Inventory* Character::Inv()              { return( inv_ ); }
 int        Character::SkillLibrarySize() { return( skill_library_.size() ); }
+int        Character::Level()            { return 1; }
+int        Character::ComboCount()       { return _combo_count; }
 
 void Character::_BarbarianInit(int personality){
 	_strength     = 30 - (personality == 1)*3 + (personality == 2)*6;
@@ -109,7 +146,7 @@ void Character::_BarbarianInit(int personality){
 	_attack_mod   = 20;
 	_vitality_mod = 20;
 	_power_mod    = 2;
-	_max_mp       = 60;
+	_max_mp       = 50;
 }
 
 void Character::_PaladinInit(int personality){

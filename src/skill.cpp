@@ -6,75 +6,63 @@
 #include "skill_function.cc"
 #include "dbg.h"
 
-Skill::Skill(std::string name, double init, double damage, double atk_mod, int scale_stats, double scale_value, void (*skill_function)(int*, Character*, Enemy*)){
-	name_           = name;
-	init_           = init;
-	damage_         = damage;
-	atk_mod_        = atk_mod;	
-	scale_stats_    = scale_stats;
-	scale_value_    = scale_value;
-	skill_function_ = skill_function;
+Skill::Skill(std::string name, SkillType type, void (*skill_function)(int*, Character*, Enemy*), std::string(*summary_function)(Character*)){
+	_name             = name;
+	_skill_function   = skill_function;
+	_summary_function = summary_function;
+	_type = type;
+}
+
+Skill::Skill(){
+	_name = "Cleave";
+	_skill_function = &barbarian_cleave;
+	_summary_function = &barbarian_cleave_summary;
+	_type = SkillType::STARTER;
 }
 
 int Skill::Attack(Character *character, Enemy *enemy){
-	int damage_delt = 0;
-	damage_delt += damage_;
-	damage_delt += character->Power() * atk_mod_;
-	if( scale_stats_ & SCALE_STR ) damage_delt += character->Str() * scale_value_;
-	if( scale_stats_ & SCALE_DEX ) damage_delt += character->Dex() * scale_value_;
-	if( scale_stats_ & SCALE_INT ) damage_delt += character->Int() * scale_value_;
-//	if( scale_stats_ & SCALE_WIS ) damage_delt += character->Wis() * scale_value_;
-	if( scale_stats_ & SCALE_VIT ) damage_delt += character->Vit() * scale_value_;
-//	if( scale_stats_ & SCALE_TGH ) damage_delt += character->Tgh() * scale_value_;
-	if( skill_function_ ){
-		(skill_function_)(&damage_delt, character, enemy);
-	}
-	if( init_ ){
-		//character->AdjustInitiative(init_);
-	}
+	int damage_delt = -1;
+	(_skill_function)(&damage_delt, character, enemy);
 	return damage_delt;
 }
 
-std::string Skill::Name(){ return( name_ ); }
-double Skill::Init(){ return( init_ ); }
-double Skill::Damage(){ return( damage_ ); }
-double Skill::AtkMod(){ return( atk_mod_ ); }
+std::string Skill::Name(){ return( _name ); }
 
-std::string Skill::GetSummary(){
-	std::ostringstream info;
-	info << name_ <<" ( ";
-
-	if( damage_ ){
-		info << damage_ << "DMG ";
+std::string Skill::Type(){
+	switch( _type ){
+		case SkillType::STARTER:
+			return "(Starter---)";
+		case SkillType::LINKER:
+			return "(--Linker--)";
+		case SkillType::FINISHER:
+			return "(--Finisher)";
+		case SkillType::HEAL:
+			return "(---Heal---)";
+		case SkillType::REPOSITION:
+			return "-Restore MP-";
+		case SkillType::ULTIMATE:
+			return "(--Ultimate)";
 	}
-
-	if( atk_mod_ ){
-		info << 1+atk_mod_ << " xATK ";
-	}
-
-	if( init_ ){
-		info << init_ << "ini ";
-	}
-
-	info << ")";
-
-	return info.str();
+	return "ERROR";
 }
 
-#define SKILL(id, name, init, damage, atkmod, scaleStats, scaleValue, skill_function) \
-case id: return( new Skill(name, init, damage, atkmod, scaleStats, scaleValue, skill_function) )
+std::string Skill::GetSummary(Character *c){
+	return (_summary_function)(c);
+}
 
-Skill* Skill::CreateSkill(int skill_id){
+#define SKILL(id, name, type, skill_function, summary_function) \
+case id: return( new Skill(name, type, skill_function, summary_function) )
+
+Skill* Skill::CreateSkill(enum SKILL skill_id){
 	switch( skill_id ){
-		SKILL(skill_ranger_poisonarrow,   "Poison Arrow",   -20,  0,  0,    0,         0,    &ranger_poisonarrow);
-		SKILL(skill_ranger_salve,         "Salve",          -10,  0,  0,    0,         0,    &ranger_salve);
-		SKILL(skill_ranger_strongdraw,    "Strong Draw",    -20,  0,  2,    SCALE_DEX, 1,    NULL);
-		SKILL(skill_ranger_firstaid,      "First Aid",      -20,  0,  0,    0,         0,    &ranger_firstaid);
-		SKILL(skill_ranger_cripplingshot, "Crippling Shot",  20,  0,  0.25, 0,         0,    &ranger_cripplingshot);
-		SKILL(skill_ranger_preparation,   "Preparation",    -10,  0,  0,    0,         0,    &ranger_preparation);
-		SKILL(skill_ranger_magicalarrow,  "Magical Arrow",  -20,  0,  0,    SCALE_DEX, 0.35, &ranger_magicalarrow);
-		SKILL(skill_ranger_frozenarrow,   "Frozen Shot",    -30,  0,  2,    SCALE_DEX, 0.2,  NULL);
-		SKILL(skill_ranger_steadyshot,    "Steady Shot",     10,  0,  0.75, SCALE_DEX, 0.15, NULL);
+		SKILL(SKILL::REPOSITION,              "-Reposition-",    SkillType::REPOSITION, &reposition, &reposition_summary);
+		SKILL(SKILL::BARBARIAN_CLEAVE,        "Cleve",           SkillType::STARTER, &barbarian_cleave, &barbarian_cleave_summary);
+		SKILL(SKILL::BARBARIAN_EXBASH,        "EX Bash",         SkillType::LINKER, &barbarian_exbash, &barbarian_exbash_summary);
+		SKILL(SKILL::BARBARIAN_WHIRLWIND,     "Whirlwind",       SkillType::STARTER, &barbarian_whirlwind, &barbarian_whirlwind_summary);
+		SKILL(SKILL::BARBARIAN_EXWHIRLWIND,   "EX Whirlwind",    SkillType::LINKER, &barbarian_exwhirlwind, &barbarian_exwhirlwind_summary);
+		SKILL(SKILL::BARBARIAN_FRENZY,        "Frenzy",          SkillType::STARTER, &barbarian_frenzy, &barbarian_frenzy_summary);
+		SKILL(SKILL::BARBARIAN_SIESMICSLAM,   "Siesmic Slam",    SkillType::LINKER, &barbarian_siesmicslam, &barbarian_siesmicslam_summary);
+		SKILL(SKILL::FINALBLOW,               "Final Blow",      SkillType::FINISHER, &finalblow, &finalblow_summary);
 	}
 	return NULL;
 }

@@ -14,24 +14,37 @@
 class Character;
 class Enemy;
 
+enum class SKILL;
+enum class SkillType{
+	STARTER,
+	LINKER,
+	FINISHER,
+	HEAL,
+	ULTIMATE,
+	REPOSITION,
+};
+
 class Skill{
 public:
-	static Skill* CreateSkill(int skill_id);
-	Skill(std::string name, double init, double damage, double atk_mod, int scale_stats, double scale_value, void (*skill_function)(int*, Character*, Enemy*));
+	static Skill* CreateSkill(SKILL);
+	Skill(std::string name, SkillType type, void (*skill_function)(int*, Character*, Enemy*), std::string(*summary_function)(Character*));
+	Skill();
 	std::string Name();
-	double      Init();
-	double      Damage();
-	double      AtkMod();
-	std::string GetSummary();
+	std::string GetSummary(Character *character);
+	std::string Type();
 	int         Attack(Character *character, Enemy *enemy);
 private:
-	std::string  name_;
+	std::string  _name;
+	std::string (*_summary_function)(Character*);
+	void        (*_skill_function)(int*, Character*, Enemy*);
+	SkillType    _type;
+
 	double       init_;
 	double       damage_;
 	double       atk_mod_;	
 	int          scale_stats_;
 	int          scale_value_;
-	void        (*skill_function_)(int*, Character*, Enemy*);
+	
 };
 
 #endif

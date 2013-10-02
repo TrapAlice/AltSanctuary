@@ -16,6 +16,7 @@ public:
 	int         MaxHp();
 	int         MinPower();
 	int         MaxPower();
+	int         AttackBoost();
 	void        CycleConditions(int state, double *damage, Entity *attacker);
 	void        GainCondition(Condition *condition);
 	void        ClearConditions();

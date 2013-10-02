@@ -22,8 +22,16 @@ public:
 	int         Vit();
 	int         Wis();
 	int         Power();
+	int         PowerMulti(double multipler);
 	int         Mp();
 	int         MaxMp();
+	int         Level();
+	bool        EnoughMp(int amount);
+	void        UseMp(int amount);
+	void        RestoreMp(int amount);
+	void        IncreaseCombo();
+	void        ResetCombo();
+	int         ComboCount();
 	void        AddSkill( Skill* skill );
 	void        SetSkill( int pos, int libraryPos );
 	Inventory*  Inv();
@@ -45,6 +53,7 @@ private:
 	int         _mp;
 	int         _max_mp;
 	int         _armor_value;
+	int         _combo_count;
 	Inventory *inv_;
 	Skill    **skills_;
 	std::vector<Skill*> skill_library_;

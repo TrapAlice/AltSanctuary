@@ -3,57 +3,146 @@
 #include "condition.h"
 #include "conditionid.h"
 #include "dbg.h"
+#include "util.h"
 
-void ranger_poisonarrow(int *damage, Character* c, Enemy* e){
-	e->GainCondition(Condition::CreateCondition(Condition_Ranger_Poison, c->Str()));
+#include <string>
+#include <sstream>
+
+bool isCrit(Character *c){
+	return (rand() % 100 + 1 < ((1 + c->Dex() / 2)/(100 + c->Dex() / 2)) * 100);
 }
 
-void ranger_salve(int *damage, Character* c, Enemy* e){
-	/*float dex_scale;
-	float atk_mod;
-	if( c->Initiative() <= 20 ){
-		dex_scale = 0.5;
-		atk_mod   = 0.9;
-	} else if( c->Initiative() <= 40 ){
-		dex_scale = 0.75;
-		atk_mod   = 0.8;
-	} else if( c->Initiative() <= 60 ){
-		dex_scale = 1;
-		atk_mod   = 0.7;
-	} else {
-		dex_scale = 1.5;
-		atk_mod   = 0.6;
+int hitChance(Character *c){
+	return (int)((double)(100 + c->Dex() - 30)/(100 + c->Dex()) * 100);
+}
+
+void reposition(int *damage, Character* c, Enemy* e){
+	c->RestoreMp(50);
+	//c->ResetCombo();
+	*damage = -2;
+}
+
+std::string reposition_summary(Character *c){
+	return moon::BuildString("+%dMP",50);
+}
+
+void barbarian_cleave(int *damage, Character* c, Enemy* e){
+	c->IncreaseCombo();
+	int attack_boost = c->AttackBoost();
+	//Remove ensnare
+	attack_boost += c->Vit() * 3;
+	*damage = c->PowerMulti(0.5) + attack_boost;
+	if( isCrit(c) ){
+		*damage *= 3;
 	}
-
-	*damage += c->Dex() * dex_scale;
-	*damage += c->Power() * atk_mod;*/
+	e->TakeDamage(*damage);
 }
 
-void ranger_firstaid(int *damage, Character* c, Enemy* e){
-	/*if( c->Initiative() <= 20 ){
-		c->GainCondition(Condition::CreateCondition(Condition_Ranger_HealTier1));
-		c->AdjustInitiative(-20);
-	} else if( c->Initiative() <= 40 ){
-		c->GainCondition(Condition::CreateCondition(Condition_Ranger_HealTier2));
-		c->AdjustInitiative(-40);
-	} else if( c->Initiative() <= 60 ){
-		c->GainCondition(Condition::CreateCondition(Condition_Ranger_HealTier3));
-		c->AdjustInitiative(-60);
-	} else {
-		c->GainCondition(Condition::CreateCondition(Condition_Ranger_HealTier4));
-		c->AdjustInitiative(-80);
-	}*/
+std::string barbarian_cleave_summary(Character *c){
+	return moon::BuildString(" No MP, 50%%%% ATK + %d DMG", c->Vit()*3);
 }
 
-void ranger_cripplingshot(int *damage, Character* c, Enemy* e){
-	e->GainCondition(Condition::CreateCondition(Condition_Ranger_CripplingShot));
+void barbarian_exbash(int *damage, Character* c, Enemy* e){
+	c->IncreaseCombo();
+	int attack_boost = c->AttackBoost();
+	//Remove ensnare
+	attack_boost += c->Vit() * 3;
+	*damage = c->PowerMulti(0.6) + attack_boost;
+	if( isCrit(c) ){
+		*damage *= 3;
+	}
+	e->TakeDamage(*damage);
 }
 
-void ranger_preparation(int *damage, Character* c, Enemy* e){
-	c->GainCondition(Condition::CreateCondition(Condition_Ranger_Preparation));
+std::string barbarian_exbash_summary(Character* c){
+	return moon::BuildString(" No MP, 60%%%% ATK + %d DMG", c->Vit()*3);
 }
 
-void ranger_magicalarrow(int *damage, Character* c, Enemy* e){
-	/**damage += c->Power() * (1.5 + c->Initiative()/50);
-	c->TakeDamage(-*damage*0.05);*/
+void barbarian_whirlwind(int *damage, Character *c, Enemy *e){
+	*damage = 0;
+	if( rand() % 100 <= hitChance(c)){
+		c->IncreaseCombo();
+		int attack_boost = c->AttackBoost();
+		c->RestoreMp(10);
+		c->TakeDamage((double)c->Hp()*0.2);
+		*damage = c->PowerMulti(2) + attack_boost; 
+		if( isCrit(c) ){
+			*damage *= 3;
+		}
+		e->TakeDamage(*damage);
+	}
+}
+
+std::string barbarian_whirlwind_summary(Character *c){
+	return moon::BuildString("+10 MP, 2X ATK, -%d Hp %d%%%% HIT",(int)((double)c->Hp()*0.2), hitChance(c));
+}
+
+void barbarian_exwhirlwind(int *damage, Character *c, Enemy *e){
+	*damage = 0;
+	if( rand() % 100 <= hitChance(c)){
+		c->IncreaseCombo();
+		int attack_boost = c->AttackBoost();
+		c->RestoreMp(10);
+		c->TakeDamage((double)c->Hp()*0.05);
+		*damage = c->PowerMulti(2) + attack_boost; 
+		if( isCrit(c) ){
+			*damage *= 3;
+		}
+		e->TakeDamage(*damage);
+	}
+}
+
+std::string barbarian_exwhirlwind_summary(Character *c){
+	return moon::BuildString("+10 MP, 2X ATK, -%d Hp %d%%%% HIT", (int)((double)c->Hp()*0.05), hitChance(c));
+}
+
+void barbarian_frenzy(int *damage, Character *c, Enemy *e){
+	if( c->EnoughMp(10) ){
+		c->IncreaseCombo();
+		c->UseMp(10);
+		int attack_boost = c->AttackBoost();
+		*damage = c->PowerMulti(0.2)+ attack_boost;
+		if( isCrit(c) ){
+			*damage *= 3;
+		}
+		e->TakeDamage(*damage);
+	}
+}
+
+std::string barbarian_frenzy_summary(Character *c){
+	return moon::BuildString("-10 MP, 20%%%% ATK");
+}
+
+void barbarian_siesmicslam(int *damage, Character *c, Enemy *e){
+	if( c->EnoughMp(10) ){
+		c->IncreaseCombo();
+		c->UseMp(10);
+		int attack_boost = c->AttackBoost();
+		*damage = c->PowerMulti(1.5)+ attack_boost;
+		if( isCrit(c) ){
+			*damage *= 3;
+		}
+		e->TakeDamage(*damage);
+	}
+}
+
+std::string barbarian_siesmicslam_summary(Character *c){
+	return moon::BuildString("-10 MP, 150%%%% ATK");
+}
+
+void finalblow(int *damage, Character *c, Enemy *e){
+	if( c->EnoughMp(20) ){
+		c->IncreaseCombo();
+		c->UseMp(20);
+		int attack_boost = c->AttackBoost();
+		*damage = c->PowerMulti(1.7)+ attack_boost;
+		if( isCrit(c) ){
+			*damage *= 3;
+		}
+		e->TakeDamage(*damage);
+	}
+}
+
+std::string finalblow_summary(Character *c){
+	return moon::BuildString("-20 MP, 170%%%% ATK");
 }
