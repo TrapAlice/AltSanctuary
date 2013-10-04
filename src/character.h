@@ -16,16 +16,16 @@ public:
 	Character(Class class_type, Race race, std::string name, int personality);
 	~Character();
 	std::string ClassName();
-	int         Str();
-	int         Dex();
-	int         Int();
-	int         Vit();
-	int         Wis();
-	int         Power();
-	int         PowerMulti(double multipler);
-	int         Mp();
-	int         MaxMp();
-	int         Level();
+	int         Str() const;
+	int         Dex() const;
+	int         Int() const;
+	int         Vit() const;
+	int         Wis() const;
+	int         Power() const;
+	int         PowerMulti(double multipler) const;
+	int         Mp() const;
+	int         MaxMp() const;
+	int         Level() const;
 	bool        EnoughMp(int amount);
 	void        UseMp(int amount);
 	void        RestoreMp(int amount);
@@ -35,7 +35,7 @@ public:
 	void        AddSkill( Skill* skill );
 	void        SetSkill( int pos, int libraryPos );
 	Inventory*  Inv();
-	Skill*      GetSkill( int pos );
+	Skill&      GetSkill( int pos );
 	int         SkillLibrarySize();
 	std::string SkillSummary( int pos );
 private:

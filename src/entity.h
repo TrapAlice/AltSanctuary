@@ -12,11 +12,11 @@ public:
 	virtual ~Entity();
 	void        TakeDamage( double damage );
 	std::string Name();
-	int         Hp();
-	int         MaxHp();
-	int         MinPower();
-	int         MaxPower();
-	int         AttackBoost();
+	int         Hp() const;
+	int         MaxHp() const;
+	int         MinPower() const;
+	int         MaxPower() const;
+	int         AttackBoost() const;
 	void        CycleConditions(int state, double *damage, Entity *attacker);
 	void        GainCondition(Condition *condition);
 	void        ClearConditions();

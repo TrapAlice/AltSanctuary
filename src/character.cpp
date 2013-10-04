@@ -30,6 +30,7 @@ Character::Character(Class class_type, Race race, std::string name, int personal
 		case Class::DRUID:
 			_DruidInit(personality);
 			break;
+		case Class::NOCLASS:
 		default:
 			break;
 	}
@@ -73,8 +74,10 @@ std::string Character::ClassName(){
 			return( "Ranger" );
 		case Class::DRUID:
 			return( "Druid" );
+		case Class::NOCLASS:
+		default:
+			return "";
 	}
-	return "";
 }
 
 void Character::AddSkill(Skill* skill){
@@ -92,8 +95,8 @@ std::string Character::SkillSummary(int pos){
 	return "";
 }
 
-Skill* Character::GetSkill(int pos){
-	return skill_library_[pos];
+Skill& Character::GetSkill(int pos){
+	return *skill_library_[pos];
 }
 
 bool Character::EnoughMp(int amount){
@@ -119,22 +122,22 @@ void Character::ResetCombo(){
 	_combo_count = 0;
 }
 
-int Character::PowerMulti(double multiplier){
+int Character::PowerMulti(double multiplier) const{
 	return _attack_power * multiplier;
 }
 
 
-int        Character::Str()              { return( _strength ); }
-int        Character::Dex()              { return( _dexterity ); }
-int        Character::Int()              { return( _intelligence ); }
-int        Character::Vit()              { return( _vitality ); }
-int        Character::Wis()              { return( _wisdom ); }
-int        Character::Power()            { return( _attack_power ); }
-int        Character::Mp()               { return( _mp ); }
-int        Character::MaxMp()            { return( _max_mp ); }
+int        Character::Str() const        { return( _strength ); }
+int        Character::Dex() const        { return( _dexterity ); }
+int        Character::Int() const        { return( _intelligence ); }
+int        Character::Vit() const        { return( _vitality ); }
+int        Character::Wis() const        { return( _wisdom ); }
+int        Character::Power() const      { return( _attack_power ); }
+int        Character::Mp() const         { return( _mp ); }
+int        Character::MaxMp() const      { return( _max_mp ); }
 Inventory* Character::Inv()              { return( inv_ ); }
 int        Character::SkillLibrarySize() { return( skill_library_.size() ); }
-int        Character::Level()            { return 1; }
+int        Character::Level() const      { return 1; }
 int        Character::ComboCount()       { return _combo_count; }
 
 void Character::_BarbarianInit(int personality){

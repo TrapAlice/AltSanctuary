@@ -1,7 +1,8 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-#include "stack.h"
+#include <memory>
+#include <stack>
 
 class Renderer;
 class World;
@@ -10,16 +11,16 @@ class iGameState;
 
 class Game{
 public:
-	Game();
+	Game(std::unique_ptr<Renderer>& renderer, std::unique_ptr<World>& world, std::unique_ptr<Input>& input);
 	~Game();
 	void Start();
 	void End();
 private:
-	Renderer           *renderer_;
-	Input              *input_;
-	World              *world_;
-	bool                done_;
-	Stack<iGameState*> *state_stack_;
+	std::unique_ptr<Renderer> _renderer;
+	std::unique_ptr<World> _world;
+	std::unique_ptr<Input> _input;
+	bool            _done;
+	std::stack<std::unique_ptr<iGameState>> _state_stack;
 };
 
 #endif

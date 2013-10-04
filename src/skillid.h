@@ -10,7 +10,6 @@ enum class SKILL{
 	BARBARIAN_FRENZY,
 	BARBARIAN_SIESMICSLAM,
 	FINALBLOW,
-	num_skills,
 };
 
 #endif

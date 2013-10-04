@@ -13,24 +13,24 @@ State_Conversation::State_Conversation(Conversation c){
 	_text.push_back("> Go to Gate 16. Our world is in dire need of your help... I must go now.");
 }
 
-void State_Conversation::Render( World *w, Renderer *r){
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	r->prints(40-_speaker_name.length()/2, 1, _speaker_name.c_str());
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	r->printlns(0, GRAPHIC(_speaker_graphic));
-	r->prints(0, 16, "+-----------------------------------------------------------------------------+");
-	r->printlns(0, _text[_position]);
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
-	r->printlns(0, "");
-	r->printlns(0, "");
-	r->printlns(0, "");
-	r->printlns(0, "");
-	r->printlns(0, "+-----------------------------------------------------------------------------+");
+void State_Conversation::Render( World& w, Renderer& r ){
+	r.printlns(0, "+-----------------------------------------------------------------------------+");
+	r.prints(40-_speaker_name.length()/2, 1, _speaker_name.c_str());
+	r.printlns(0, "+-----------------------------------------------------------------------------+");
+	r.printlns(0, GRAPHIC(_speaker_graphic));
+	r.prints(0, 16, "+-----------------------------------------------------------------------------+");
+	r.printlns(0, _text[_position]);
+	r.printlns(0, "+-----------------------------------------------------------------------------+");
+	r.printlns(0, "");
+	r.printlns(0, "");
+	r.printlns(0, "");
+	r.printlns(0, "");
+	r.printlns(0, "+-----------------------------------------------------------------------------+");
 }
 
-void State_Conversation::Update( Stack<iGameState*> *s, World *w, char c){
+void State_Conversation::Update( std::stack<std::unique_ptr<iGameState>>& s, World& w, char c ){
 	++_position;
 	if(_position == _text.size()){
-		s->Pop();
+		s.pop();
 	}
 }

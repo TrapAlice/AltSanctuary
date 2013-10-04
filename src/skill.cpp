@@ -6,7 +6,7 @@
 #include "skill_function.cc"
 #include "dbg.h"
 
-Skill::Skill(std::string name, SkillType type, void (*skill_function)(int*, Character*, Enemy*), std::string(*summary_function)(Character*)){
+Skill::Skill(std::string name, SkillType type, void (*skill_function)(int&, Character&, Enemy*), std::string(*summary_function)(const Character&)){
 	_name             = name;
 	_skill_function   = skill_function;
 	_summary_function = summary_function;
@@ -20,9 +20,9 @@ Skill::Skill(){
 	_type = SkillType::STARTER;
 }
 
-int Skill::Attack(Character *character, Enemy *enemy){
+int Skill::Attack(Character &character, Enemy *enemy){
 	int damage_delt = -1;
-	(_skill_function)(&damage_delt, character, enemy);
+	(_skill_function)(damage_delt, character, enemy);
 	return damage_delt;
 }
 
@@ -46,7 +46,7 @@ std::string Skill::Type(){
 	return "ERROR";
 }
 
-std::string Skill::GetSummary(Character *c){
+std::string Skill::GetSummary(const Character& c){
 	return (_summary_function)(c);
 }
 

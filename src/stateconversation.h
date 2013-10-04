@@ -13,8 +13,8 @@ enum class Graphic;
 class State_Conversation : public iGameState {
 public:
 	State_Conversation(Conversation c);
-	void Render( World *w, Renderer *r);
-	void Update( Stack<iGameState*> *s, World *w, char c);
+	void            Render( World& w, Renderer& r );
+	void            Update( std::stack<std::unique_ptr<iGameState>>& s, World& w, char c );
 private:
 	Graphic         _speaker_graphic;
 	std::string     _speaker_name;

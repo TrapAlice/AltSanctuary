@@ -1,38 +1,39 @@
 #include "game.h"
-#include "world.h"
-#include "gamestate.h"
+
 #include "input.h"
-#include "statemainmenu.h"
-
+#include "gamestate.h"
+	#include "statemainmenu.h"
 #include "renderer.h"
+#include "world.h"
 
-Game::Game(){
-	renderer_    = new Renderer();
-	world_       = new World(this);
-	input_       = new Input();
-	done_        = false;
-	state_stack_ = new Stack<iGameState*>;
+using std::stack;
+using std::shared_ptr;
+
+Game::Game(std::unique_ptr<Renderer>& renderer, std::unique_ptr<World>& world, std::unique_ptr<Input>& input)
+	: _done(false)
+{
+	_renderer   = std::move(renderer);
+	_world      = std::move(world);
+	_input      = std::move(input);
 }
 
-Game::~Game(){
-	if( renderer_ ) delete renderer_;
-	if( world_ )    delete world_;
-	if( input_ )    delete input_;
-}
+Game::~Game()
+{}
 
 void Game::Start(){
 	char selection;
-	state_stack_->Push(new State_MainMenu());
-	while( !done_ ){
-		state_stack_->Top()->Render(world_, renderer_);
-		renderer_->Flush();
-		selection = input_->Key();
-		if( selection == '#' || renderer_->isClosed()) done_ = true;
-		state_stack_->Top()->Update(state_stack_, world_, selection);
+	_state_stack.push(std::unique_ptr<State_MainMenu>(new State_MainMenu));
+	while( !_done && !_state_stack.empty() ){
+		iGameState* current_state = _state_stack.top().get();
+		current_state->Render(*_world.get(), *_renderer.get());
+		_renderer->Flush();
+		selection = _input->Key();
+		if( selection == '#' || _renderer->isClosed()) _done = true;
+		current_state->Update(_state_stack, *_world.get(), selection);
 	}
-	state_stack_->Clear();
+	//_state_stack.clear();
 }
 
 void Game::End(){
-	done_ = true;
+	_done = true;
 }

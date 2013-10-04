@@ -18,15 +18,15 @@ void Entity::TakeDamage(double damage){
 	}
 }
 
-int Entity::MinPower(){
+int Entity::MinPower() const{
 	return _attack_power * 0.75;
 }
 
-int Entity::MaxPower(){
+int Entity::MaxPower() const{
 	return _attack_power * 1.25;
 }
 
-int Entity::AttackBoost(){
+int Entity::AttackBoost() const{
 	return rand() % (MaxPower() - MinPower() + 1) + MinPower();
 }
 
@@ -65,5 +65,5 @@ void Entity::ClearConditions(){
 }
 
 std::string Entity::Name()  { return( name_ ); }
-int         Entity::Hp()    { return( _hp ); }
-int         Entity::MaxHp() { return( _max_hp ); }
+int         Entity::Hp() const    { return( _hp ); }
+int         Entity::MaxHp() const { return( _max_hp ); }
