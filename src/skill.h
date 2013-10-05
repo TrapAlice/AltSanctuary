@@ -26,24 +26,24 @@ enum class SkillType{
 
 class Skill{
 public:
-	static Skill* CreateSkill(SKILL);
+	static Skill    CreateSkill(SKILL id);
 	Skill(std::string name, SkillType type, void (*skill_function)(int&, Character&, Enemy*), std::string(*summary_function)(const Character&));
 	Skill();
-	std::string Name();
-	std::string GetSummary(const Character& character);
-	std::string Type();
-	int         Attack(Character &character, Enemy *enemy);
+	std::string     Name();
+	std::string     GetSummary(const Character& character);
+	std::string     Type();
+	int             Attack(Character &character, Enemy *enemy);
 private:
-	std::string  _name;
-	std::string (*_summary_function)(const Character&);
-	void        (*_skill_function)(int&, Character&, Enemy*);
-	SkillType    _type;
+	std::string     _name;
+	std::string    (*_summary_function)(const Character&); //To be replaced with std::functions
+	void           (*_skill_function)(int&, Character&, Enemy*);
+	SkillType       _type;
 
-	double       init_;
-	double       damage_;
-	double       atk_mod_;	
-	int          scale_stats_;
-	int          scale_value_;
+	double          init_;
+	double          damage_;
+	double          atk_mod_;	
+	int             scale_stats_;
+	int             scale_value_;
 	
 };
 

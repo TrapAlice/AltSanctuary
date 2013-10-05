@@ -1,16 +1,16 @@
 #include "character.h"
-#include "skill.h"
-#include "inventory.h"
 #include "class.h"
-#include "race.h"
-#include <stdlib.h>
 #include "dbg.h"
+#include "race.h"
+#include "skill.h"
+#include <stdlib.h>
 
-Character::Character(Class class_type, Race race, std::string name, int personality){
-	skills_ = NULL;
-	inv_ = NULL;
-	_class = class_type;
-	_name = name;
+
+Character::Character(const Class& class_type, const Race& race, const std::string& name, const int& personality)
+	: _class(class_type)
+	, _race(race)
+	, _name(name)
+{
 	switch( _class ){
 		case Class::BARBARIAN:
 			_BarbarianInit(personality);
@@ -55,12 +55,11 @@ Character::Character(Class class_type, Race race, std::string name, int personal
 	AddSkill(Skill::CreateSkill(SKILL::FINALBLOW));
 }
 
-Character::~Character(){
-	if( skills_ ) delete skills_;
-	if( inv_ )    delete inv_;
+Character::~Character()
+{
 }
 
-std::string Character::ClassName(){
+std::string Character::ClassName() const{
 	switch( _class ){
 		case Class::BARBARIAN:
 			return( "Barbarian" );
@@ -80,37 +79,26 @@ std::string Character::ClassName(){
 	}
 }
 
-void Character::AddSkill(Skill* skill){
-	skill_library_.push_back(skill);
+void Character::AddSkill(const Skill skill){
+	_skill_library.push_back(skill);
 }
 
-void Character::SetSkill(int pos, int libraryPos){
-	skills_[pos] = skill_library_[libraryPos];
+const Skill& Character::GetSkill(const int& pos) const{
+	return _skill_library[pos];
 }
 
-std::string Character::SkillSummary(int pos){
-	if( skills_[pos] ){
-		//return skills_[pos]->GetSummary();
-	}
-	return "";
-}
-
-Skill& Character::GetSkill(int pos){
-	return *skill_library_[pos];
-}
-
-bool Character::EnoughMp(int amount){
+bool Character::EnoughMp(const int& amount) const{
 	return _mp >= amount;
 }
 
-void Character::RestoreMp(int amount){
+void Character::RestoreMp(const int& amount){
 	_mp += amount;
 	if( _mp > _max_mp ){
 		_mp = _max_mp;
 	}
 }
 
-void Character::UseMp(int amount){
+void Character::UseMp(const int& amount){
 	_mp = _mp < amount ? 0 : _mp-amount;
 }
 
@@ -122,7 +110,7 @@ void Character::ResetCombo(){
 	_combo_count = 0;
 }
 
-int Character::PowerMulti(double multiplier) const{
+int Character::PowerMulti(const double& multiplier) const{
 	return _attack_power * multiplier;
 }
 
@@ -135,12 +123,11 @@ int        Character::Wis() const        { return( _wisdom ); }
 int        Character::Power() const      { return( _attack_power ); }
 int        Character::Mp() const         { return( _mp ); }
 int        Character::MaxMp() const      { return( _max_mp ); }
-Inventory* Character::Inv()              { return( inv_ ); }
-int        Character::SkillLibrarySize() { return( skill_library_.size() ); }
+int        Character::SkillLibrarySize() const { return( _skill_library.size() ); }
 int        Character::Level() const      { return 1; }
-int        Character::ComboCount()       { return _combo_count; }
+int        Character::ComboCount() const { return _combo_count; }
 
-void Character::_BarbarianInit(int personality){
+void Character::_BarbarianInit(const int& personality){
 	_strength     = 30 - (personality == 1)*3 + (personality == 2)*6;
 	_dexterity    = 8  + (personality == 1)*5 - (personality == 3)*2;
 	_intelligence = 1;
@@ -152,7 +139,7 @@ void Character::_BarbarianInit(int personality){
 	_max_mp       = 50;
 }
 
-void Character::_PaladinInit(int personality){
+void Character::_PaladinInit(const int& personality){
 	_strength     = 6  + (personality == 2)*3 - (personality == 3)*4;
 	_dexterity    = 1  + (personality == 1)*5;
 	_intelligence = 9  - (personality == 1)*3;
@@ -164,7 +151,7 @@ void Character::_PaladinInit(int personality){
 	_max_mp       = 60;
 }
 
-void Character::_AssassinInit(int personality){
+void Character::_AssassinInit(const int& personality){
 	_strength     = 6  - (personality == 2)*2 + (personality == 3)*5;
 	_dexterity    = 35 + (personality == 1)*6 + (personality == 2)*3 - (personality == 3)*3;
 	_intelligence = 1;
@@ -176,7 +163,7 @@ void Character::_AssassinInit(int personality){
 	_max_mp       = 60;
 }
 
-void Character::_WizardInit(int personality){
+void Character::_WizardInit(const int& personality){
 	_strength     = 6  - (personality == 2)*2;
 	_dexterity    = 1  + (personality == 3)*6;
 	_intelligence = 28 + (personality == 1)*5 + (personality == 2)*3 - (personality == 3)*4;
@@ -188,7 +175,7 @@ void Character::_WizardInit(int personality){
 	_max_mp       = 80;
 }
 
-void Character::_DruidInit(int personality){
+void Character::_DruidInit(const int& personality){
 	_strength     = 28 + (personality == 1)*3 - (personality == 2)*4 - (personality == 3)*3;
 	_dexterity    = 1;
 	_intelligence = 1  - (personality == 1)*2 +  (personality == 2)*6;
@@ -200,7 +187,7 @@ void Character::_DruidInit(int personality){
 	_max_mp       = 60;
 }
 
-void Character::_RangerInit(int personality){
+void Character::_RangerInit(const int& personality){
 	_strength     = 13 - (personality == 2)*3 - (personality == 3)*2;
 	_dexterity    = 28 + (personality == 1)*6 + (personality == 2)*5;
 	_intelligence = 1;

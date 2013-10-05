@@ -1,7 +1,7 @@
 #include "class.h"
 #include "graphic.h"
 
-std::string CLASS_NAME(Class c){
+std::string CLASS_NAME(const Class& c){
 	switch(c){
 		case Class::BARBARIAN:
 			return "Barbarian";
@@ -21,7 +21,7 @@ std::string CLASS_NAME(Class c){
 	}
 }
 
-std::string CLASS_INFO(Class c){
+std::string CLASS_INFO(const Class& c){
 	switch(c){
 		case Class::BARBARIAN:
 			return "Regenerates 5%%%% of max HP each turn when health is below 50%%%%\nIncreased healing ability based on RAGE meter.\nGains 20 MP per Reposition.\nIncreased lifesteal from lifesteal abilities.\nGains additional attack power from points in VIT.\nHas chance for Whirlwind [2] to break GUARDING.\nUsing Cleave [1] will remove ENSNARE effects.";
@@ -41,7 +41,7 @@ std::string CLASS_INFO(Class c){
 	}
 }
 
-std::string CLASS_PERSONALITY(Class c){
+std::string CLASS_PERSONALITY(const Class& c){
 	switch(c){
 		case Class::BARBARIAN:
 			return "[1] Brave   = [+5 DEX, -3 STR] [First one in, last one out.]\n[2] Rash    = [+6 STR, -4 VIT] [In battle, there's no time for thinking.]\n[3] Adamant = [+3 VIT, -2 DEX] [You can't move a mountain with an ant.]";
@@ -61,7 +61,7 @@ std::string CLASS_PERSONALITY(Class c){
 	}
 }
 
-std::string CLASS_GRAPHIC(Class c, bool isMale){
+std::string CLASS_GRAPHIC(const Class& c, const bool& isMale){
 	switch(c){
 		case Class::BARBARIAN:
 			if( isMale )

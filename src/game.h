@@ -4,17 +4,17 @@
 #include <memory>
 #include <stack>
 
+class iGameState;
+class Input;
 class Renderer;
 class World;
-class Input;
-class iGameState;
 
 class Game{
 public:
-	Game(std::unique_ptr<Renderer>& renderer, std::unique_ptr<World>& world, std::unique_ptr<Input>& input);
+	Game(std::unique_ptr<Renderer>& renderer, std::unique_ptr<Input>& input);
 	~Game();
-	void Start();
-	void End();
+	void            Start();
+	void            End();
 private:
 	std::unique_ptr<Renderer> _renderer;
 	std::unique_ptr<World> _world;

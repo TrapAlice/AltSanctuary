@@ -22,4 +22,4 @@ enum class Graphic{
 };
 
 void        GRAPHIC_INIT();
-std::string GRAPHIC(Graphic g);
+std::string GRAPHIC(const Graphic& g);

@@ -1,15 +1,15 @@
 #include "statecombat.h"
-#include "renderer.h"
 #include "character.h"
-#include "skill.h"
-#include "enemy.h"
-#include "world.h"
 #include "dbg.h"
+#include "enemy.h"
+#include "renderer.h"
+#include "skill.h"
+#include "world.h"
+
 
 State_Combat::State_Combat(){
 	skill_offset_    = 0;
 	player_position_ = 0;
-	repositioning_   = false;
 	current_enemy_   = new Enemy("Test", 200, 1, 5);
 	memset(_used_skill, 0, 3);
 	_heals_used = 0;
@@ -18,7 +18,6 @@ State_Combat::State_Combat(){
 State_Combat::State_Combat(Enemy *enemy){
 	skill_offset_    = 0;
 	player_position_ = 0;
-	repositioning_   = false;
 	current_enemy_   = enemy;
 }
 
@@ -62,7 +61,7 @@ void State_Combat::Render(World& w, Renderer& r){
 	r.printlns(0, "+-----------------------------------------------------------------------------+");
 }
 
-void State_Combat::Update( std::stack<std::unique_ptr<iGameState>>& s, World& w, char c ){
+void State_Combat::Update( GameStateStack& s, World& w, const char& c ){
 	Character character = w.Player();
 	int damage;
 	switch( c ){
@@ -99,7 +98,7 @@ void State_Combat::Update( std::stack<std::unique_ptr<iGameState>>& s, World& w,
 
 void State_Combat::_PlayerAttack(World &w, Skill &skill){
 	double damage = skill.Attack(w.Player(), current_enemy_);
-	w.Player().CycleConditions(2, &damage, current_enemy_);
+	//zw.Player().CycleConditions(2, &damage, current_enemy_);
 	current_enemy_->TakeDamage(damage);
 }
 
@@ -117,15 +116,15 @@ void State_Combat::_Heal(Character& c){
 	}
 }
 
-Skill& State_Combat::_Skill1(Character c){
+const Skill& State_Combat::_Skill1(Character c){
 	return _used_skill[0]? c.GetSkill(0) : _used_skill[1] || _used_skill[2]? c.GetSkill(4) : c.GetSkill(1);
 }
 
-Skill& State_Combat::_Skill2(Character c){
+const Skill& State_Combat::_Skill2(Character c){
 	return _used_skill[1]? c.GetSkill(0) : _used_skill[0] || _used_skill[2]? c.GetSkill(5) : c.GetSkill(2);
 }
 
-Skill& State_Combat::_Skill3(Character c){
+const Skill& State_Combat::_Skill3(Character c){
 	return _used_skill[2]? _used_skill[0] && _used_skill[1]? c.GetSkill(7) : c.GetSkill(0) : _used_skill[1] || _used_skill[0]? c.GetSkill(6) : c.GetSkill(3);
 }
 

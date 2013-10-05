@@ -1,10 +1,10 @@
 #include "skill.h"
 #include "character.h"
+#include "dbg.h"
 #include "enemy.h"
+#include "skill_function.cc"
 #include <sstream>
 #include <iostream>
-#include "skill_function.cc"
-#include "dbg.h"
 
 Skill::Skill(std::string name, SkillType type, void (*skill_function)(int&, Character&, Enemy*), std::string(*summary_function)(const Character&)){
 	_name             = name;
@@ -14,7 +14,7 @@ Skill::Skill(std::string name, SkillType type, void (*skill_function)(int&, Char
 }
 
 Skill::Skill(){
-	_name = "Cleave";
+	_name = "Error";
 	_skill_function = &barbarian_cleave;
 	_summary_function = &barbarian_cleave_summary;
 	_type = SkillType::STARTER;
@@ -51,9 +51,9 @@ std::string Skill::GetSummary(const Character& c){
 }
 
 #define SKILL(id, name, type, skill_function, summary_function) \
-case id: return( new Skill(name, type, skill_function, summary_function) )
+case id: return( Skill(name, type, skill_function, summary_function) )
 
-Skill* Skill::CreateSkill(enum SKILL skill_id){
+Skill Skill::CreateSkill(enum SKILL skill_id){
 	switch( skill_id ){
 		SKILL(SKILL::REPOSITION,              "-Reposition-",    SkillType::REPOSITION, &reposition, &reposition_summary);
 		SKILL(SKILL::BARBARIAN_CLEAVE,        "Cleve",           SkillType::STARTER, &barbarian_cleave, &barbarian_cleave_summary);
@@ -64,5 +64,5 @@ Skill* Skill::CreateSkill(enum SKILL skill_id){
 		SKILL(SKILL::BARBARIAN_SIESMICSLAM,   "Siesmic Slam",    SkillType::LINKER, &barbarian_siesmicslam, &barbarian_siesmicslam_summary);
 		SKILL(SKILL::FINALBLOW,               "Final Blow",      SkillType::FINISHER, &finalblow, &finalblow_summary);
 	}
-	return NULL;
+	return Skill();
 }

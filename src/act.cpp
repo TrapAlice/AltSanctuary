@@ -2,15 +2,15 @@
 #include "zone.h"
 
 Act::Act(){
-	_zones[0] = new Zone();
+	_zones.push_back(Zone());
 }
 
-Zone* Act::getZone(int pos){
+Zone& Act::getZone(const int& pos){
 	return _zones[pos-1];
 }
 
-void Act::setCurrentQuest(std::string quest){
+void Act::setCurrentQuest(const std::string& quest){
 	_current_quest = quest;
 }
 
-std::string Act::getCurrentQuest(){ return _current_quest; }
+std::string Act::getCurrentQuest() const{ return _current_quest; }

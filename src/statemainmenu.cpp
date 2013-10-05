@@ -1,8 +1,8 @@
 #include "statemainmenu.h"
-#include "statecharacterselect.h"
-#include "renderer.h"
-#include "world.h"
 #include "graphic.h"
+#include "renderer.h"
+#include "statecharacterselect.h"
+#include "world.h"
 
 void State_MainMenu::Render( World& w, Renderer& r ){
 	r.printlns(0,   "+-----------------------------------------------------------------------------+");
@@ -21,13 +21,13 @@ void State_MainMenu::Render( World& w, Renderer& r ){
 	r.printlns(0,   "+-----------------------------------------------------------------------------+");
 }
 
-void State_MainMenu::Update( std::stack<std::unique_ptr<iGameState>>& s, World& w, char c ){
+void State_MainMenu::Update( GameStateStack& s, World& w, const char& c ){
 	switch( c ){
 		case '1':
-			s.push(std::unique_ptr<State_CharacterSelect>(new State_CharacterSelect()));
+			s.push(new_state(CharacterSelect));
 			break;
 		case 'x':
-			w.End();
+			s.pop();
 			break;
 	}
 }

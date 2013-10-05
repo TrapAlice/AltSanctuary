@@ -4,9 +4,9 @@
 class Input{
 public:
 	Input();
-	int Key();
+	int             Key();
 private:
-	bool _key_pressed;
+	bool            _key_pressed;
 };
 
 #endif

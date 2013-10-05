@@ -1,8 +1,8 @@
 #ifndef _RENDERER_H
 #define _RENDERER_H
 
-#include <string>
 #include <memory>
+#include <string>
 
 class TCODConsole;
 
@@ -10,13 +10,13 @@ class Renderer{
 public:
 	Renderer();
 	~Renderer();
-	void            prints( int x, int y, std::string s, ... );
-	void            printlns( int x, std::string s, ... );
-	void            print( std::string s, ... );
-	void            printc( int x, int y, char c );
-	void            Flush( );
-	void            Debug( std::string s, ... );
-	bool            isClosed( );
+	void            prints(const int& x, const int& y, const std::string& s, ...);
+	void            printlns(const int& x, const std::string& s, ...);
+	void            print(const std::string& s, ...) const;
+	void            printc(const int& x, const int& y, const char& c) const;
+	void            Flush();
+	void            Debug(const std::string& s, ...);
+	bool            isClosed() const;
 private:
 	int             _line;
 	int             _debug_line;

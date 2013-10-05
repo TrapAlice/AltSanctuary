@@ -262,6 +262,6 @@ void GRAPHIC_INIT(){
 	LOAD_GRAPHIC(DIANE);
 }
 
-std::string GRAPHIC(Graphic g){
+std::string GRAPHIC(const Graphic& g){
 	return graphics[(int)g]();
 }

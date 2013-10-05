@@ -28,7 +28,7 @@ void State_Conversation::Render( World& w, Renderer& r ){
 	r.printlns(0, "+-----------------------------------------------------------------------------+");
 }
 
-void State_Conversation::Update( std::stack<std::unique_ptr<iGameState>>& s, World& w, char c ){
+void State_Conversation::Update( GameStateStack& s, World& w, const char& c ){
 	++_position;
 	if(_position == _text.size()){
 		s.pop();

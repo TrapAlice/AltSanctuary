@@ -1,6 +1,6 @@
 #include "race.h"
 
-std::string RACE_NAME(Race r){
+std::string RACE_NAME(const Race& r){
 	switch(r){
 		case Race::HUMAN:
 			return "Human";

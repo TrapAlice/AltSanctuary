@@ -1,10 +1,7 @@
 #include "enemy.h"
 #include "character.h"
-#include "condition.h"
-#include "conditionid.h"
 #include "dbg.h"
 #include "util.h"
-
 #include <string>
 #include <sstream>
 

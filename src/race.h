@@ -14,4 +14,4 @@ enum class Race{
 	HUSKIAN,
 };
 
-std::string RACE_NAME(Race r);
+std::string RACE_NAME(const Race& r);

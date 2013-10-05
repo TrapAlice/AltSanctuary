@@ -1,8 +1,8 @@
 #pragma once
 
 #include "gamestate.h"
-#include <vector>
 #include <string>
+#include <vector>
 
 enum class Conversation{
 	STRANGE_ENCOUNTER,
@@ -14,7 +14,7 @@ class State_Conversation : public iGameState {
 public:
 	State_Conversation(Conversation c);
 	void            Render( World& w, Renderer& r );
-	void            Update( std::stack<std::unique_ptr<iGameState>>& s, World& w, char c );
+	void            Update( GameStateStack& s, World& w, const char& c );
 private:
 	Graphic         _speaker_graphic;
 	std::string     _speaker_name;

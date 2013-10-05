@@ -5,8 +5,8 @@
 
 class State_GameMode : public iGameState{
 public:
-	void Render( World& w, Renderer& r );
-	void Update( std::stack<std::unique_ptr<iGameState>>& s, World& w, char c );
+	void            Render( World& w, Renderer& r );
+	void            Update( GameStateStack& s, World& w, const char& c );
 };
 
 #endif

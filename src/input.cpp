@@ -1,7 +1,7 @@
 #include "input.h"
-#include <iostream>
-#include "libtcod.hpp"
 #include "dbg.h"
+#include "libtcod.hpp"
+#include <iostream>
 
 Input::Input(){
 	_key_pressed = 0;

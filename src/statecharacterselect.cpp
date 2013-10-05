@@ -1,13 +1,13 @@
 #include "statecharacterselect.h"
-#include "stategamemode.h"
-#include "stateconversation.h"
-#include "renderer.h"
-#include "character.h"
-#include "world.h"
-#include "dbg.h"
-#include "class.h"
-#include "race.h"
 #include "backstory.h"
+#include "character.h"
+#include "class.h"
+#include "dbg.h"
+#include "race.h"
+#include "renderer.h"
+#include "stateconversation.h"
+#include "stategamemode.h"
+#include "world.h"
 
 #define STATE_CHANGE(state) _renderFunction = std::bind(&State_CharacterSelect::_##state##Render, this, std::placeholders::_1); \
                             _updateFunction = std::bind(&State_CharacterSelect::_##state##Update, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
@@ -21,7 +21,7 @@ void State_CharacterSelect::Render( World& w, Renderer& r ){
 	_renderFunction(r);
 }
 
-void State_CharacterSelect::Update( std::stack<std::unique_ptr<iGameState>>& s, World& w, char c ){
+void State_CharacterSelect::Update( GameStateStack& s, World& w, const char& c ){
 	_updateFunction(s, w, c);
 }
 
@@ -173,7 +173,7 @@ void State_CharacterSelect::_BackStoryRender(Renderer& r){
 	r.prints(2, 20, "This is your story.");
 }
 
-void State_CharacterSelect::_SelectClassUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_SelectClassUpdate(GameStateStack& s, World& w, const char& c){
 	switch(c){
 		case '1':
 			_selectedClass = Class::BARBARIAN;
@@ -205,7 +205,7 @@ void State_CharacterSelect::_SelectClassUpdate(std::stack<std::unique_ptr<iGameS
 	}
 }
 
-void State_CharacterSelect::_SelectGenderUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_SelectGenderUpdate(GameStateStack& s, World& w, const char& c){
 	switch(c){
 		case '1':
 			_isMale = true;
@@ -221,11 +221,11 @@ void State_CharacterSelect::_SelectGenderUpdate(std::stack<std::unique_ptr<iGame
 	}
 }
 
-void State_CharacterSelect::_ClassInfoUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_ClassInfoUpdate(GameStateStack& s, World& w, const char& c){
 	STATE_CHANGE(SelectPersonality);
 }
 
-void State_CharacterSelect::_SelectPersonalityUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_SelectPersonalityUpdate(GameStateStack& s, World& w, const char& c){
 	if( c == 'a' ){
 		STATE_CHANGE(SelectGender);
 	}
@@ -235,7 +235,7 @@ void State_CharacterSelect::_SelectPersonalityUpdate(std::stack<std::unique_ptr<
 	}
 }
 
-void State_CharacterSelect::_SelectGameModeUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_SelectGameModeUpdate(GameStateStack& s, World& w, const char& c){
 	switch(c){
 		case '1':
 			STATE_CHANGE(SelectRaceCatagory);
@@ -249,7 +249,7 @@ void State_CharacterSelect::_SelectGameModeUpdate(std::stack<std::unique_ptr<iGa
 	}
 }
 
-void State_CharacterSelect::_SelectRaceCatagoryUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_SelectRaceCatagoryUpdate(GameStateStack& s, World& w, const char& c){
 	switch(c){
 		case '1':
 			STATE_CHANGE(SelectRace);
@@ -269,7 +269,7 @@ void State_CharacterSelect::_SelectRaceCatagoryUpdate(std::stack<std::unique_ptr
 	}
 }
 
-void State_CharacterSelect::_SelectRaceUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_SelectRaceUpdate(GameStateStack& s, World& w, const char& c){
 	Race races[3][3] = {{Race::HUMAN, Race::SILIAN, Race::KRASTE},
 	                  {Race::FLAMMKIN, Race::JOTUNNAR, Race:: WYSPERA},
 	                  {Race::GOERN, Race::SONITE, Race::HUSKIAN}};
@@ -282,7 +282,7 @@ void State_CharacterSelect::_SelectRaceUpdate(std::stack<std::unique_ptr<iGameSt
 	}
 }
 
-void State_CharacterSelect::_EnterNameUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_EnterNameUpdate(GameStateStack& s, World& w, const char& c){
 	if( c == 8 ){ //Backspace
 		if( _name.size() > 0 )
 			_name.pop_back();
@@ -295,10 +295,10 @@ void State_CharacterSelect::_EnterNameUpdate(std::stack<std::unique_ptr<iGameSta
 		_name+= c;
 }
 
-void State_CharacterSelect::_BackStoryUpdate(std::stack<std::unique_ptr<iGameState>>& s, World& w, char c){
+void State_CharacterSelect::_BackStoryUpdate(GameStateStack& s, World& w, const char& c){
 	std::unique_ptr<Character> player(new Character(_selectedClass, _selectedRace, _name, _selectedPersonality));
-	w.SetPlayer(std::move(player));
+	w.SetPlayer(player);
 	s.pop();
-	s.push(std::unique_ptr<State_GameMode>(new State_GameMode()));
-	s.push(std::unique_ptr<State_Conversation>(new State_Conversation(Conversation::STRANGE_ENCOUNTER)));
+	s.push(new_state(GameMode));
+	s.push(new_state(Conversation, Conversation::STRANGE_ENCOUNTER));
 }
