@@ -5,6 +5,11 @@ Entity::Entity()
 {
 }
 
+Entity::Entity(std::string name)
+	: _name(name)
+{
+}
+
 Entity::~Entity()
 {
 }
@@ -24,10 +29,10 @@ int Entity::MaxPower() const{
 	return _attack_power * 1.25;
 }
 
-int Entity::AttackBoost() const{
+int Entity::AttackPower() const{
 	return rand() % (MaxPower() - MinPower() + 1) + MinPower();
 }
 
-std::string         Entity::Name() const  { return( name_ ); }
+std::string         Entity::Name() const  { return( _name ); }
 int                 Entity::Hp() const    { return( _hp ); }
 int                 Entity::MaxHp() const { return( _max_hp ); }

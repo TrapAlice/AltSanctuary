@@ -5,6 +5,7 @@
 class Zone{
 public:
 	Zone();
+	~Zone();
 	std::string     getName() const;
 	std::string     getLevelRange() const;
 private:

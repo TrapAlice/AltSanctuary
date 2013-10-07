@@ -19,6 +19,7 @@ public:
 	bool            isClosed() const;
 private:
 	int             _line;
+	int             _x;
 	int             _debug_line;
 	std::unique_ptr<TCODConsole> _console;
 };

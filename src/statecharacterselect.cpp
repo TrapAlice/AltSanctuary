@@ -296,7 +296,7 @@ void State_CharacterSelect::_EnterNameUpdate(GameStateStack& s, World& w, const 
 }
 
 void State_CharacterSelect::_BackStoryUpdate(GameStateStack& s, World& w, const char& c){
-	std::unique_ptr<Character> player(new Character(_selectedClass, _selectedRace, _name, _selectedPersonality));
+	std::unique_ptr<Character> player(new Character(_selectedClass, _selectedRace, _name, _selectedPersonality, _isMale));
 	w.SetPlayer(player);
 	s.pop();
 	s.push(new_state(GameMode));

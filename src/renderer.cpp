@@ -17,9 +17,8 @@ Renderer::~Renderer()
 }
 
 void Renderer::prints(const int& x, const int& y, const std::string& s, ...){
-	char *text;
+	char text[2000];
 	va_list ap;
-	text = new char[2000];
 	va_start(ap, s);
 	vsprintf(text, s.c_str(), ap);
 	va_end(ap);
@@ -27,13 +26,11 @@ void Renderer::prints(const int& x, const int& y, const std::string& s, ...){
 	_line=y+1;
 
 	_console->print(x, y, text);
-	delete(text);
 }
 
 void Renderer::printlns(const int& x, const std::string& s, ...){
-	char *text;
+	char text[2000];
 	va_list ap;
-	text = new char[2000];
 	va_start(ap, s);
 	vsprintf(text, s.c_str(), ap);
 	va_end(ap);
@@ -43,15 +40,13 @@ void Renderer::printlns(const int& x, const std::string& s, ...){
 }
 
 void Renderer::print(const std::string& s, ...) const{
-	char *text;
+	char text[2000];
 	va_list ap;
-	text = new char[2000];
 	va_start(ap, s);
 	vsprintf(text, s.c_str(), ap);
 	va_end(ap);
 
-	//_console->print( text);
-	delete(text);
+	_console->print(_x, _line, text);
 }
 
 void Renderer::printc(const int& x, const int& y, const char& c) const{
@@ -59,16 +54,14 @@ void Renderer::printc(const int& x, const int& y, const char& c) const{
 }
 
 void Renderer::Debug(const std::string& s, ...){
-	char *text;
+	char text[2000];
 	va_list ap;
-	text = new char[2000];
 	va_start(ap, s);
 	vsprintf(text, s.c_str(), ap);
 	va_end(ap);
 
 	_console->print( 82, 5+_debug_line, text);
 	++_debug_line;
-	delete(text);
 }
 
 void Renderer::Flush(){

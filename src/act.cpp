@@ -5,6 +5,8 @@ Act::Act(){
 	_zones.push_back(Zone());
 }
 
+Act::~Act() = default;
+
 Zone& Act::getZone(const int& pos){
 	return _zones[pos-1];
 }

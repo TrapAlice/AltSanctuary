@@ -2,13 +2,13 @@
 #define _ENTITY_H
 
 #include <string>
-#include <vector>
 
 //class Condition;
 
 class Entity{
 public:
 	Entity();
+	Entity(std::string name);
 	virtual ~Entity();
 	void            TakeDamage(const double& damage);
 	std::string     Name() const;
@@ -16,9 +16,9 @@ public:
 	int             MaxHp() const;
 	int             MinPower() const;
 	int             MaxPower() const;
-	int             AttackBoost() const;
+	int             AttackPower() const;
 protected:
-	std::string     name_;
+	std::string     _name;
 	int             _hp;
 	int             _max_hp;
 	int             _attack_power;

@@ -1,8 +1,8 @@
-#ifndef _CHARACTER_H
-#define _CHARACTER_H
+#pragma once
 
 #include "entity.h"
 #include <string>
+#include <vector>
 
 enum class Class;
 enum class Race;
@@ -10,13 +10,18 @@ class Skill;
 
 class Character : public Entity{
 public:
-	Character(const Class& class_type, const Race& race, const std::string& name, const int& personality);
+	Character(const Class& class_type, const Race& race, const std::string& name, const int& personality, const bool& is_male);
 	~Character();
 	std::string     ClassName() const;
+	Race            getRace() const;
+	std::string     getRaceName() const;
+	std::string     getGender() const;
 	int             Str() const;
+	int             PowerMod() const;
 	int             Dex() const;
 	int             Int() const;
 	int             Vit() const;
+	int             VitMod() const;
 	int             Wis() const;
 	int             Power() const;
 	int             PowerMulti(const double& multipler) const;
@@ -32,6 +37,8 @@ public:
 	void            AddSkill(const Skill skill);
 	const Skill&    GetSkill(const int& pos) const;
 	int             SkillLibrarySize() const;
+	int             getGold() const;
+	void            IncreaseGold(int amount);
 private:
 	Class           _class;
 	Race            _race;
@@ -48,6 +55,8 @@ private:
 	int             _max_mp;
 	int             _armor_value;
 	int             _combo_count;
+	bool            _is_male;
+	int             _gold;
 	std::vector<Skill> _skill_library;
 	
 	void _BarbarianInit(const int& personality);
@@ -57,5 +66,3 @@ private:
 	void _RangerInit(const int& personality);
 	void _DruidInit(const int& personality);
 };
-
-#endif
