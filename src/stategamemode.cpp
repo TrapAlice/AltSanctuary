@@ -23,7 +23,11 @@ void State_GameMode::Render( World& w, Renderer& r ){
 	r.printlns(0, "  /   /   .  ,   /    _/' /'             |   `        `-.,__     |_    /");
 	r.printlns(0, "");
 	r.printlns(0, "");
-	r.printlns(2, "HP: %d / %d   ATK: 67 - 80   MP: 65 / 65   GOLD: 0", c.Hp(), c.MaxHp()); //Player stats
+	r.printlns(2, "HP: %d / %d   ATK: %d - %d   MP: %d / %d   GOLD: %d", 
+	           c.Hp(), c.MaxHp(),
+	           c.MinPower(), c.MaxPower(),
+	           c.Mp(), c.MaxMp(),
+	           c.getGold()); //Player stats
 	r.printlns(0, "");
 	r.printlns(0, "+-----------------------------------------------------------------------------+");
 	r.printlns(2, "Quest: Search the Grassy Fields for another Gate."); //Current quest
@@ -43,6 +47,6 @@ void State_GameMode::Render( World& w, Renderer& r ){
 
 void State_GameMode::Update( GameStateStack& s, World& w, const char& c ){
 	if(c == '1'){
-		s.push(new_state(Combat));
+		s.push(new_state(Combat, std::unique_ptr<Enemy>(new Enemy("Test", 200, 50, 5))));
 	}
 }

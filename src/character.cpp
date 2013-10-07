@@ -6,10 +6,12 @@
 #include <stdlib.h>
 
 
-Character::Character(const Class& class_type, const Race& race, const std::string& name, const int& personality)
-	: _class(class_type)
+Character::Character(const Class& class_type, const Race& race, const std::string& name, const int& personality, const bool& isMale)
+	: Entity(name)
+	, _class(class_type)
 	, _race(race)
-	, _name(name)
+	, _is_male(isMale)
+	, _gold(0)
 {
 	switch( _class ){
 		case Class::BARBARIAN:
@@ -60,23 +62,11 @@ Character::~Character()
 }
 
 std::string Character::ClassName() const{
-	switch( _class ){
-		case Class::BARBARIAN:
-			return( "Barbarian" );
-		case Class::PALADIN:
-			return( "Paladin" );
-		case Class::ASSASSIN:
-			return( "Assassin" );
-		case Class::WIZARD:
-			return( "Wizard" );
-		case Class::RANGER:
-			return( "Ranger" );
-		case Class::DRUID:
-			return( "Druid" );
-		case Class::NOCLASS:
-		default:
-			return "";
-	}
+	return CLASS_NAME(_class);
+}
+
+std::string Character::getRaceName() const{
+	return RACE_NAME(_race);
 }
 
 void Character::AddSkill(const Skill skill){
@@ -114,11 +104,18 @@ int Character::PowerMulti(const double& multiplier) const{
 	return _attack_power * multiplier;
 }
 
+void Character::IncreaseGold(int amount)
+{
+	_gold += amount;
+}
+
 
 int        Character::Str() const        { return( _strength ); }
+int        Character::PowerMod() const   { return _power_mod; }
 int        Character::Dex() const        { return( _dexterity ); }
 int        Character::Int() const        { return( _intelligence ); }
 int        Character::Vit() const        { return( _vitality ); }
+int        Character::VitMod() const     { return _vitality_mod; }
 int        Character::Wis() const        { return( _wisdom ); }
 int        Character::Power() const      { return( _attack_power ); }
 int        Character::Mp() const         { return( _mp ); }
@@ -126,6 +123,9 @@ int        Character::MaxMp() const      { return( _max_mp ); }
 int        Character::SkillLibrarySize() const { return( _skill_library.size() ); }
 int        Character::Level() const      { return 1; }
 int        Character::ComboCount() const { return _combo_count; }
+Race       Character::getRace() const    { return _race; }
+std::string Character::getGender() const { return _is_male? "Male" : "Female";}
+int        Character::getGold() const    { return _gold; }
 
 void Character::_BarbarianInit(const int& personality){
 	_strength     = 30 - (personality == 1)*3 + (personality == 2)*6;

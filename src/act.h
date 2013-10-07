@@ -9,6 +9,7 @@ class Zone;
 class Act{
 public:
 	Act();
+	~Act();
 	Zone&           getZone(const int& pos);
 	void            setCurrentQuest(const std::string& quest);
 	std::string     getCurrentQuest() const;

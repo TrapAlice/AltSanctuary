@@ -4,30 +4,22 @@
 #include "enemy.h"
 #include "renderer.h"
 #include "skill.h"
+#include "statebeatmonster.h"
 #include "world.h"
 
-
-State_Combat::State_Combat(){
-	skill_offset_    = 0;
-	player_position_ = 0;
-	current_enemy_   = new Enemy("Test", 200, 1, 5);
+State_Combat::State_Combat(std::unique_ptr<Enemy> enemy)
+	: _current_enemy(std::move(enemy))
+	, _heals_used(0)
+{
 	memset(_used_skill, 0, 3);
-	_heals_used = 0;
-}
-
-State_Combat::State_Combat(Enemy *enemy){
-	skill_offset_    = 0;
-	player_position_ = 0;
-	current_enemy_   = enemy;
 }
 
 void State_Combat::Render(World& w, Renderer& r){
-	Character c = w.Player();
-	Enemy *e = current_enemy_;
-	Skill s;
+	Character& c = w.Player();
+	Enemy& e = *_current_enemy.get();
 	r.prints(0, 1, "> Monster taunt");
-	r.prints(2, 3, "HP: %d / %d", e->Hp(), e->MaxHp()); //Monster's stats
-	r.prints(18,3, "ATK: %d - %d", e->MinPower(), e->MaxPower());
+	r.prints(2, 3, "HP: %d / %d", e.Hp(), e.MaxHp()); //Monster's stats
+	r.prints(18,3, "ATK: %d - %d", e.MinPower(), e.MaxPower());
 	//r.prints(4, 4, "[::::::::::] [-]");
 	r.prints(0, 7, "> You are ready for battle.");
 	r.prints(2, 9, "HP: %d / %d", c.Hp(), c.MaxHp());
@@ -62,24 +54,25 @@ void State_Combat::Render(World& w, Renderer& r){
 }
 
 void State_Combat::Update( GameStateStack& s, World& w, const char& c ){
-	Character character = w.Player();
+	Character& character = w.Player();
+	Enemy& enemy =  *_current_enemy.get();
 	int damage;
 	switch( c ){
 		case '1':{
 			Skill a = _Skill1(character);
-			damage = a.Attack(w.Player(), current_enemy_);
+			damage = a.Attack(character, enemy);
 			_used_skill[0] = true;
 			break;
 		}
 		case '2':{
 			Skill a = _Skill2(character);
-			damage = a.Attack(w.Player(), current_enemy_);
+			damage = a.Attack(character, enemy);
 			_used_skill[1] = true;
 			break;
 		}
 		case '3':{
 			Skill a = _Skill3(character);
-			damage = a.Attack(w.Player(), current_enemy_);
+			damage = a.Attack(character, enemy);
 			if( _used_skill[0] && _used_skill[1] && _used_skill[2] ){
 				memset(_used_skill, 0, 3);
 				break;
@@ -93,13 +86,26 @@ void State_Combat::Update( GameStateStack& s, World& w, const char& c ){
 		default:
 			return;
 	}
-	log_info("You dealt %d damage", damage);
+	if( damage > -2 ){
+		log_info("You dealt %d damage", damage);
+
+		int enemy_damage = enemy.AttackPower();
+		character.TakeDamage(enemy_damage);
+
+		log_info("The enemy deals %d damage", enemy_damage);
+	}
+	
+
+	if( enemy.Hp() < 1 ){
+		log_info("Enemy killed");
+		s.pop();
+		s.push(new_state(BeatMonster));
+	}
 }
 
 void State_Combat::_PlayerAttack(World &w, Skill &skill){
-	double damage = skill.Attack(w.Player(), current_enemy_);
-	//zw.Player().CycleConditions(2, &damage, current_enemy_);
-	current_enemy_->TakeDamage(damage);
+	//double damage = skill.Attack(w.Player(), _current_enemy);
+	//_current_enemy.TakeDamage(damage);
 }
 
 int State_Combat::_HealValue(Character& c){
@@ -129,6 +135,6 @@ const Skill& State_Combat::_Skill3(Character c){
 }
 
 
-State_Combat::~State_Combat(){
-	delete current_enemy_;
+State_Combat::~State_Combat()
+{
 }

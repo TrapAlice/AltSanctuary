@@ -5,7 +5,6 @@
 
 class Act;
 class Character;
-class Game;
 
 class World{
 public:

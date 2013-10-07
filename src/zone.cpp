@@ -6,6 +6,8 @@ Zone::Zone(){
 	_level_range = "01-05";
 }
 
+Zone::~Zone() = default;
+
 std::string Zone::getName() const{ return _name; }
 
 std::string Zone::getLevelRange() const{

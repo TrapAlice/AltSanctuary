@@ -5,12 +5,14 @@
 #include "statemainmenu.h"
 #include "world.h"
 
+
+
 Game::Game(std::unique_ptr<Renderer>& renderer, std::unique_ptr<Input>& input)
 	: _renderer(std::move(renderer))
 	, _input(std::move(input))
 	, _done(false)
 {
-	_world = std::unique_ptr<World>(new World);
+	_world = std::unique_ptr<World>(new World());
 }
 
 Game::~Game()
