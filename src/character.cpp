@@ -11,7 +11,6 @@ Character::Character(const Class& class_type, const Race& race, const std::strin
 	, _class(class_type)
 	, _race(race)
 	, _is_male(isMale)
-	, _gold(0)
 {
 	switch( _class ){
 		case Class::BARBARIAN:
@@ -55,6 +54,9 @@ Character::Character(const Class& class_type, const Race& race, const std::strin
 	AddSkill(Skill::CreateSkill(SKILL::BARBARIAN_EXWHIRLWIND));
 	AddSkill(Skill::CreateSkill(SKILL::BARBARIAN_SIESMICSLAM));
 	AddSkill(Skill::CreateSkill(SKILL::FINALBLOW));
+
+	_exp = 0;
+	_gold = 0;
 }
 
 Character::~Character()
@@ -104,9 +106,13 @@ int Character::PowerMulti(const double& multiplier) const{
 	return _attack_power * multiplier;
 }
 
-void Character::IncreaseGold(int amount)
+void Character::SpendGold(int amount){
+	_gold -= amount;
+}
+
+void Character::FullyHeal()
 {
-	_gold += amount;
+	_hp = _max_hp;
 }
 
 
@@ -125,7 +131,6 @@ int        Character::Level() const      { return 1; }
 int        Character::ComboCount() const { return _combo_count; }
 Race       Character::getRace() const    { return _race; }
 std::string Character::getGender() const { return _is_male? "Male" : "Female";}
-int        Character::getGold() const    { return _gold; }
 
 void Character::_BarbarianInit(const int& personality){
 	_strength     = 30 - (personality == 1)*3 + (personality == 2)*6;

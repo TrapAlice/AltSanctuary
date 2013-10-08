@@ -98,8 +98,9 @@ void State_Combat::Update( GameStateStack& s, World& w, const char& c ){
 
 	if( enemy.Hp() < 1 ){
 		log_info("Enemy killed");
+		Enemy e = *_current_enemy.get();
 		s.pop();
-		s.push(new_state(BeatMonster));
+		s.push(new_state(BeatMonster, e));
 	}
 }
 

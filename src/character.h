@@ -37,8 +37,8 @@ public:
 	void            AddSkill(const Skill skill);
 	const Skill&    GetSkill(const int& pos) const;
 	int             SkillLibrarySize() const;
-	int             getGold() const;
-	void            IncreaseGold(int amount);
+	void            SpendGold(int amount);
+	void            FullyHeal();
 private:
 	Class           _class;
 	Race            _race;
@@ -56,7 +56,6 @@ private:
 	int             _armor_value;
 	int             _combo_count;
 	bool            _is_male;
-	int             _gold;
 	std::vector<Skill> _skill_library;
 	
 	void _BarbarianInit(const int& personality);

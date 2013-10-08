@@ -6,8 +6,9 @@
 class Enemy : public Entity{
 public:
 	Enemy();
-	Enemy(std::string name, int max_hp, double patk, double matk);
+	Enemy(std::string name, int max_hp, int patk, int exp_rate, int gold_rate);
 	~Enemy();
+private:
 };
 
 #endif

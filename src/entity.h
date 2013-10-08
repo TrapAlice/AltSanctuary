@@ -17,11 +17,17 @@ public:
 	int             MinPower() const;
 	int             MaxPower() const;
 	int             AttackPower() const;
+	int             getGold() const;
+	int             getExp() const;
+	void            IncreaseGold(int amount);
+	void            IncreaseExp(int amount);
 protected:
 	std::string     _name;
 	int             _hp;
 	int             _max_hp;
 	int             _attack_power;
+	int             _exp;
+	int             _gold;
 };
 
 #endif

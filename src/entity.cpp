@@ -33,6 +33,18 @@ int Entity::AttackPower() const{
 	return rand() % (MaxPower() - MinPower() + 1) + MinPower();
 }
 
+void Entity::IncreaseGold(int amount)
+{
+	_gold += amount;
+}
+
+void Entity::IncreaseExp(int amount)
+{
+	_exp += amount;
+}
+
 std::string         Entity::Name() const  { return( _name ); }
 int                 Entity::Hp() const    { return( _hp ); }
 int                 Entity::MaxHp() const { return( _max_hp ); }
+int                 Entity::getGold() const { return _gold; }
+int                 Entity::getExp() const { return _exp; }
