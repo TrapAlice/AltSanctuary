@@ -106,6 +106,7 @@ int Character::PowerMulti(const double& multiplier) const{
 	return _attack_power * multiplier;
 }
 
+<<<<<<< HEAD
 void Character::SpendGold(int amount){
 	_gold -= amount;
 }
